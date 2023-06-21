@@ -1,7 +1,7 @@
 import os
 
 
-class AbcParser:
+class AbcParser(object):
 
     def __init__(self, filename: str):
         """
@@ -10,7 +10,7 @@ class AbcParser:
         """
         self._filename = filename
 
-    def read_file(self):
+    def read_file(self, encoding='utf-8') -> list[str]:
         """
          Read the file and return a list of lines.
 
@@ -18,9 +18,8 @@ class AbcParser:
          @return list [ str ] The lines of the file as a list of strings.
          Each string is a line
         """
-        with open(self._filename, mode='r', encoding='utf-8') as f:
-            lines = f.readlines()
-        return lines
+        with open(self._filename, mode='r', encoding=encoding) as f:
+            return f.readlines()
 
     def get_save_path(self) -> str:
         """
@@ -33,19 +32,7 @@ class AbcParser:
         """
         return os.path.join(os.path.dirname(self._filename), "new_data.tsv")
 
-    def get_save_leo_path(self) -> str:
-        """
-         Get the path to save the data.
-         It is based on the filename that was passed to the constructor.
-
-
-         @return The path to save the data to ( string )or None
-         if not found ( None will be returned
-        """
-        # leo_name = self._filename.split('/')[-1].split(['.'])[0]
-        return os.path.join(os.path.dirname(self._filename),  "data.leo")
-
-    def write_to_tsv(self, lines):
+    def write_to_tsv(self, lines: list[str]) -> str:
         """
          Write lines to tab separated file.
          This is useful for debugging and to avoid having to re
@@ -71,7 +58,25 @@ class ParserFile(AbcParser):
         """
         super(ParserFile, self).__init__(filename)
 
-    def parser_heart_disease(self, line: str) -> str:
+    @staticmethod
+    def parser_acute_inflammations(line: str) -> str:
+        line_list = line.replace('no', 'False').replace('yes', 'True').replace(
+            '\n', '').replace(',', '.').split('\t')
+        new_line_list = line_list[0:-2]
+        if line_list[-2] == 'False':
+            if line_list[-1] == 'False':
+                new_line_list.append('0')
+            else:
+                new_line_list.append('2')
+        else:
+            if line_list[-1] == 'False':
+                new_line_list.append('1')
+            else:
+                new_line_list.append('4')
+        return '\t'.join(new_line_list) + '\n'
+
+    @staticmethod
+    def parser_heart_disease(line: str) -> str:
         """
          Parses Heart Disease.
          Replaces spaces with tabs and question mark with 0.
@@ -82,8 +87,9 @@ class ParserFile(AbcParser):
         """
         return line.replace(",", "\t").replace("?", "0.0")
 
-    def parser_lymphography(self, line: str) -> str:
-        line = line.replace(',', '\t')
-        new_line = line[2:len(line)].replace('\n', '') + '\t' + line[0:1] + '\n'
-        # print(new_line)
-        return new_line
+
+if __name__ == "__main__":
+    with open('data/Acute_Inflammations/diagnosis.data',
+              mode='r',
+              encoding='utf-16') as f:
+        ParserFile.parser_acute_inflammations(f.readline())

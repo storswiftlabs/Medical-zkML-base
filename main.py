@@ -4,6 +4,7 @@ import os
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
+
 from decision_tree.dt_to_leo_code import dt_to_leo_code
 
 FILE_PATH = os.path.abspath(
@@ -63,11 +64,9 @@ def data_preprocess(data_path):
         new_path = os.path.join(last_path, "new_data.tsv")
         with open(new_path, 'w+') as new_file:
             for line in lines:
-                line_list = line.replace('\n', '').replace(',', '.').replace(
-                    'yes', 'True').replace('no', 'False').split('\t')
+                line_list = line.replace('\n', '').replace(',', '.').replace('yes', 'True').replace('no', 'False').split('\t')
                 # get feature, struct new line
-                last_feature = feature_two_combine_into_one(
-                    line_list[-2], line_list[-1])
+                last_feature = feature_two_combine_into_one(line_list[-2], line_list[-1])
                 print(line_list, last_feature)
                 a = line_list[:len(line_list) - 2]
                 a.append(last_feature)
