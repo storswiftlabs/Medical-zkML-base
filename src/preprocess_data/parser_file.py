@@ -138,9 +138,10 @@ class ParserFile(AbcParser):
 
     def parser_lymphography(line: str) -> str:
         line = line.replace(',', '\t')
-        new_line = line[2:len(line)].replace('\n', '') + '\t' + str(int(line[0]) - 1) + '\n'
+        new_line = line[2:len(line)].replace('\n', '') + '\t' + str(int(line[0]) - 1) + '\n' # noqa E501
         print(new_line)
         return new_line
+
 
 if __name__ == "__main__":
     with open('data/Chronic_Kidney_Disease/chronic_kidney_disease.arff',
