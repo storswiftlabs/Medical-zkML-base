@@ -5,11 +5,24 @@ from sklearn import tree
 
 
 def dt_to_leo_code(clf: tree.DecisionTreeClassifier, program_name: str):
+    # number of nodes
     n_nodes = clf.tree_.node_count
+    # Left and right child nodes
     children_left = clf.tree_.children_left
     children_right = clf.tree_.children_right
+    # Features: columns of data, element variable names
     feature = clf.tree_.feature
+    #
     threshold = clf.tree_.threshold
+
+    def generate_dataset_struct(feature):
+        inputs = []
+        inputs.append("\tstruct Inputs {\n")
+        for index in range(1, feature):
+            inputs.append("\t\tp"+str(index)+":"+" u32,\n")
+        inputs.append("\t}\n")
+        return ''.join(inputs)
+
     values = [np.argmax(value[0]) for value in clf.tree_.value]
 
     node_depth = np.zeros(shape=n_nodes, dtype=np.int64)
@@ -31,7 +44,7 @@ def dt_to_leo_code(clf: tree.DecisionTreeClassifier, program_name: str):
         leo_code = ""
         leo_threshold = math.ceil(threshold[i])
         comp = "<" if int(threshold[i]) != threshold[i] else "<="
-        leo_code += node_depth[i] * "\t" + f"if (p{(feature[i] + 1)} {comp} {leo_threshold}u32) {{\n"
+        leo_code += node_depth[i] * "\t" + f"if (inputs.p{(feature[i] + 1)} {comp} {leo_threshold}u32) {{\n"
         leo_code += build_code(children_left[i])
         leo_code += node_depth[i] * "\t" + "} else {\n"
         leo_code += build_code(children_right[i])
@@ -39,10 +52,11 @@ def dt_to_leo_code(clf: tree.DecisionTreeClassifier, program_name: str):
         return leo_code
 
     leo_code = f"program {program_name} {{\n"
+    leo_code += generate_dataset_struct(clf.n_features_in_+1)
     leo_code += "\t" + "// Code auto generated from DecisionTreeClassifier using dt_to_leo_code.py \n"
-    leo_code += "\t" + "transition main("
-    for i in range(1, clf.n_features_in_ + 1):
-        leo_code += f"p{i}: u32" + (", " if i != clf.n_features_in_ else ") -> public u32 {\n")
+    leo_code += "\t" + "transition main(inputs: Inputs) -> public u32 {\n"
+    # for i in range(1, clf.n_features_in_ + 1):
+    #     leo_code += f"p{i}: u32" + (", " if i != clf.n_features_in_ else ") -> public u32 {\n")
 
     node_depth += 2
     leo_code += build_code(0)

@@ -1,7 +1,7 @@
 import os
 
 
-class AbcParser(object):
+class AbcParser:
 
     def __init__(self, filename: str):
         """
@@ -10,7 +10,7 @@ class AbcParser(object):
         """
         self._filename = filename
 
-    def read_file(self) -> list[str]:
+    def read_file(self):
         """
          Read the file and return a list of lines.
 
@@ -33,7 +33,19 @@ class AbcParser(object):
         """
         return os.path.join(os.path.dirname(self._filename), "new_data.tsv")
 
-    def write_to_tsv(self, lines: list[str]) -> str:
+    def get_save_leo_path(self) -> str:
+        """
+         Get the path to save the data.
+         It is based on the filename that was passed to the constructor.
+
+
+         @return The path to save the data to ( string )or None
+         if not found ( None will be returned
+        """
+        # leo_name = self._filename.split('/')[-1].split(['.'])[0]
+        return os.path.join(os.path.dirname(self._filename),  "data.leo")
+
+    def write_to_tsv(self, lines):
         """
          Write lines to tab separated file.
          This is useful for debugging and to avoid having to re
@@ -69,3 +81,9 @@ class ParserFile(AbcParser):
          @return Line with spaces replaced
         """
         return line.replace(",", "\t").replace("?", "0.0")
+
+    def parser_lymphography(self, line: str) -> str:
+        line = line.replace(',', '\t')
+        new_line = line[2:len(line)].replace('\n', '') + '\t' + line[0:1] + '\n'
+        # print(new_line)
+        return new_line
