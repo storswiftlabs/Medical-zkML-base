@@ -12,7 +12,7 @@ class AbcParser(object):
         """
         self._filename = filename
 
-    def read_file(self, encoding='utf-8') -> list[str]:
+    def read_file(self, encoding='utf-8'):
         """
          Read the file and return a list of lines.
 
@@ -23,7 +23,7 @@ class AbcParser(object):
         with open(self._filename, mode='r', encoding=encoding) as f:
             return f.readlines()
 
-    def get_save_path(self) -> str:
+    def get_save_path(self):
         """
          Get the path to save the data.
          It is based on the filename that was passed to the constructor.
@@ -34,7 +34,7 @@ class AbcParser(object):
         """
         return os.path.join(os.path.dirname(self._filename), "new_data.tsv")
 
-    def write_to_tsv(self, lines: list[str]) -> str:
+    def write_to_tsv(self, lines):
         """
          Write lines to tab separated file.
          This is useful for debugging and to avoid having to re
@@ -136,6 +136,11 @@ class ParserFile(AbcParser):
         line_list.append(pc)
         return '\t'.join(line_list) + '\n'
 
+    def parser_lymphography(line: str) -> str:
+        line = line.replace(',', '\t')
+        new_line = line[2:len(line)].replace('\n', '') + '\t' + str(int(line[0]) - 1) + '\n'
+        print(new_line)
+        return new_line
 
 if __name__ == "__main__":
     with open('data/Chronic_Kidney_Disease/chronic_kidney_disease.arff',

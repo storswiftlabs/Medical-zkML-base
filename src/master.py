@@ -33,8 +33,15 @@ FILE_PATH = [
         'func': ParserFile.parser_chronic_kidney_disease,
         'intercept': 24,
         'encoding': 'utf-8'
+    },
+    {
+        'file': '../data/Iymphography/lymphography.data',
+        'func': ParserFile.parser_lymphography,
+        'intercept': 18,
+        'encoding': 'utf-8'
     }
 ]
+
 # {'file': 'data/Acute_Inflammations/diagnosis.data', 'func': 3}
 if __name__ == "__main__":
     for file in FILE_PATH:
