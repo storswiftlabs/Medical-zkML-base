@@ -3,19 +3,24 @@ from decision_tree.data_analysis import Model
 from preprocess_data.parser_file import ParserFile
 
 FILE_PATH = [{
-    'file': 'data/Heart_Disease/processed.cleveland.data',
+    'file': '../data/Heart_Disease/processed.cleveland.data',
     'func': ParserFile.parser_heart_disease,
     'intercept': 13,
     'encoding': 'utf-8'
 }, {
-    'file': 'data/Acute_Inflammations/diagnosis.data',
+    'file': '../data/Acute_Inflammations/diagnosis.data',
     'func': ParserFile.parser_acute_inflammations,
     'intercept': 5,
     'encoding': 'utf-16'
 }, {
-    'file': 'data/Parkinsons/parkinsons.data',
+    'file': '../data/Parkinsons/parkinsons.data',
     'func': ParserFile.parser_parkinsons,
     'intercept': 23,
+    'encoding': 'utf-8'
+}, {
+    'file': '../data/Iymphography/lymphography.data',
+    'func': ParserFile.parser_lymphography,
+    'intercept': 18,
     'encoding': 'utf-8'
 }]
 # {'file': 'data/Acute_Inflammations/diagnosis.data', 'func': 3}
