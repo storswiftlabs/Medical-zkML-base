@@ -1,4 +1,3 @@
-import os
 import pandas as pd
 from decision_tree.data_analysis import Model
 from preprocess_data.parser_file import ParserFile
@@ -13,6 +12,11 @@ FILE_PATH = [{
     'func': ParserFile.parser_acute_inflammations,
     'intercept': 5,
     'encoding': 'utf-16'
+}, {
+    'file': 'data/Parkinsons/parkinsons.data',
+    'func': ParserFile.parser_parkinsons,
+    'intercept': 23,
+    'encoding': 'utf-8'
 }]
 # {'file': 'data/Acute_Inflammations/diagnosis.data', 'func': 3}
 if __name__ == "__main__":
@@ -28,4 +32,4 @@ if __name__ == "__main__":
 
         model = Model(titanic)
         model.get_prediction(len=file['intercept'])
-        print('\n' * 2)
+        print('\n')

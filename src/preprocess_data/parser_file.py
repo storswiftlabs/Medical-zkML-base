@@ -1,4 +1,7 @@
 import os
+import re
+
+from sklearn.calibration import LinearSVC
 
 
 class AbcParser(object):
@@ -85,11 +88,27 @@ class ParserFile(AbcParser):
 
          @return Line with spaces replaced
         """
+        pattern = re.compile(r'\?', re.IGNORECASE)
+        findRes = re.findall(pattern, line)
+        if len(findRes) != 0:
+            return ""
         return line.replace(",", "\t").replace("?", "0.0")
+
+    @staticmethod
+    def parser_parkinsons(line: str) -> str:
+        if line.endswith('PPE\n') and line != "":
+            return ""
+        line_list = line.replace('\n', '').split(',')[1:]
+        status = line_list[-7]
+        new_line = line_list[0:-7] + line_list[-8:]
+        new_line.append(status + '\n')
+        return '\t'.join(new_line)
 
 
 if __name__ == "__main__":
-    with open('data/Acute_Inflammations/diagnosis.data',
-              mode='r',
-              encoding='utf-16') as f:
-        ParserFile.parser_acute_inflammations(f.readline())
+    with open('data/Parkinsons/parkinsons.data', mode='r',
+              encoding='utf-8') as f:
+        lines = f.readlines()
+        for line in lines:
+            print(ParserFile.parser_parkinsons(line))
+            # ParserFile.parser_heart_disease(line)

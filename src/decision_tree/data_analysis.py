@@ -20,7 +20,6 @@ class AbcModel(object):
         """
         x = self.titanic[[i for i in range(len)]]
         dict_vec = DictVectorizer(sparse=False)
-        print(dict_vec.fit_transform(x.to_dict(orient="records")))
         return dict_vec.fit_transform(x.to_dict(orient="records"))
 
     def _get_y_titanic(self):
