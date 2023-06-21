@@ -87,9 +87,10 @@ class ParserFile(AbcParser):
         """
         return line.replace(",", "\t").replace("?", "0.0")
 
+    @staticmethod
+    def parser_lymphography(self, line: str) -> str:
+        line = line.replace(',', '\t')
+        new_line = line[2:len(line)].replace('\n', '') + '\t' + line[0:1] + '\n'
+        # print(new_line)
+        return new_line
 
-if __name__ == "__main__":
-    with open('data/Acute_Inflammations/diagnosis.data',
-              mode='r',
-              encoding='utf-16') as f:
-        ParserFile.parser_acute_inflammations(f.readline())
