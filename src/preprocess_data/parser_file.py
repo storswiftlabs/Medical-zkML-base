@@ -10,7 +10,7 @@ class AbcParser(object):
         """
         self._filename = filename
 
-    def read_file(self) -> list[str]:
+    def read_file(self, encoding='utf-8') -> list[str]:
         """
          Read the file and return a list of lines.
 
@@ -18,9 +18,8 @@ class AbcParser(object):
          @return list [ str ] The lines of the file as a list of strings.
          Each string is a line
         """
-        with open(self._filename, mode='r', encoding='utf-8') as f:
-            lines = f.readlines()
-        return lines
+        with open(self._filename, mode='r', encoding=encoding) as f:
+            return f.readlines()
 
     def get_save_path(self) -> str:
         """
@@ -59,7 +58,25 @@ class ParserFile(AbcParser):
         """
         super(ParserFile, self).__init__(filename)
 
-    def parser_heart_disease(self, line: str) -> str:
+    @staticmethod
+    def parser_acute_inflammations(line: str) -> str:
+        line_list = line.replace('no', 'False').replace('yes', 'True').replace(
+            '\n', '').replace(',', '.').split('\t')
+        new_line_list = line_list[0:-2]
+        if line_list[-2] == 'False':
+            if line_list[-1] == 'False':
+                new_line_list.append('0')
+            else:
+                new_line_list.append('2')
+        else:
+            if line_list[-1] == 'False':
+                new_line_list.append('1')
+            else:
+                new_line_list.append('4')
+        return '\t'.join(new_line_list) + '\n'
+
+    @staticmethod
+    def parser_heart_disease(line: str) -> str:
         """
          Parses Heart Disease.
          Replaces spaces with tabs and question mark with 0.
@@ -69,3 +86,10 @@ class ParserFile(AbcParser):
          @return Line with spaces replaced
         """
         return line.replace(",", "\t").replace("?", "0.0")
+
+
+if __name__ == "__main__":
+    with open('data/Acute_Inflammations/diagnosis.data',
+              mode='r',
+              encoding='utf-16') as f:
+        ParserFile.parser_acute_inflammations(f.readline())
