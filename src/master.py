@@ -35,7 +35,7 @@ FILE_PATH = [
         'encoding': 'utf-8'
     },
     {
-        'file': '../data/Iymphography/lymphography.data',
+        'file': 'data/Iymphography/lymphography.data',
         'func': ParserFile.parser_lymphography,
         'intercept': 18,
         'encoding': 'utf-8'
