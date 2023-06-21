@@ -2,6 +2,8 @@ from sklearn.feature_extraction import DictVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 
+from src.decision_tree.dt_to_leo_code import dt_to_leo_code
+
 
 class AbcModel(object):
 
@@ -18,7 +20,9 @@ class AbcModel(object):
          @param len - the length of the dictionary
          @return dict_vec the dict vectorized to be used in Ruturn the x_dict ( sparse # noqa: E501
         """
+
         x = self.titanic[[i for i in range(len)]]
+
         dict_vec = DictVectorizer(sparse=False)
         return dict_vec.fit_transform(x.to_dict(orient="records"))
 
@@ -53,3 +57,4 @@ class Model(AbcModel):
         dec_tree.predict(x_test)
         print("Here are the predictions:", dec_tree.predict(x_test))
         print("score", dec_tree.score(x_test, y_test))
+        return  dec_tree
