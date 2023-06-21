@@ -2,8 +2,6 @@ from sklearn.feature_extraction import DictVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 
-from src.decision_tree.dt_to_leo_code import dt_to_leo_code
-
 
 class AbcModel(object):
 
@@ -57,4 +55,4 @@ class Model(AbcModel):
         dec_tree.predict(x_test)
         print("Here are the predictions:", dec_tree.predict(x_test))
         print("score", dec_tree.score(x_test, y_test))
-        return  dec_tree
+        return dec_tree

@@ -1,4 +1,13 @@
+import re
+
+
 class Utils:
+
+    @staticmethod
+    def has_question_mark(line: str) -> bool:
+        pattern = re.compile(r'\?', re.IGNORECASE)
+        findRes = re.findall(pattern, line)
+        return len(findRes) > 0
 
     @staticmethod
     def parseInt(line: str) -> str:

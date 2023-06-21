@@ -1,7 +1,6 @@
 import os
-import re
 
-from sklearn.calibration import LinearSVC
+from preprocess_data.utils import Utils
 
 
 class AbcParser(object):
@@ -88,9 +87,8 @@ class ParserFile(AbcParser):
 
          @return Line with spaces replaced
         """
-        pattern = re.compile(r'\?', re.IGNORECASE)
-        findRes = re.findall(pattern, line)
-        if len(findRes) != 0:
+
+        if Utils.has_question_mark(line):
             return ""
         return line.replace(",", "\t").replace("?", "0.0")
 
@@ -104,11 +102,46 @@ class ParserFile(AbcParser):
         new_line.append(status + '\n')
         return '\t'.join(new_line)
 
+    @staticmethod
+    def parser_heart_failure_clinical(line: str):
+        if line.startswith('age'):
+            return ""
+        line_list = line.replace('\n', '').split(',')
+        return '\t'.join(line_list) + '\n'
+
+    @staticmethod
+    def parser_chronic_kidney_disease(line: str):
+        if Utils.has_question_mark(line):
+            return ""
+        if not line.startswith(('1', '2', '3', '4', '5', '6', '7', '8', '9')):
+            return ""
+        line = line.replace('abnormal', '0').\
+            replace('normal', '1').\
+            replace('\n', '').\
+            replace(' ', '').\
+            replace('\t', '')
+        line = line.replace('notpresent', 'False')
+        line = line.replace('present', 'True')
+        line = line.replace('notckd', 'False')
+        line = line.replace('yes', 'True')
+        line = line.replace('no', 'False')
+        line = line.replace('poor', 'False')
+        line = line.replace('good', 'True')
+        line_list = line.replace('ckd', 'True').split(',')
+        if len(line_list) != 25:
+            return ""
+        # print(line_list)
+        pc = line_list[6]
+        line_list = line_list[:6] + line_list[7:]
+        line_list.append(pc)
+        return '\t'.join(line_list) + '\n'
+
 
 if __name__ == "__main__":
-    with open('data/Parkinsons/parkinsons.data', mode='r',
+    with open('data/Chronic_Kidney_Disease/chronic_kidney_disease.arff',
+              mode='r',
               encoding='utf-8') as f:
         lines = f.readlines()
         for line in lines:
-            print(ParserFile.parser_parkinsons(line))
-            # ParserFile.parser_heart_disease(line)
+            print(ParserFile.parser_chronic_kidney_disease(line))
+            ParserFile.parser_chronic_kidney_disease(line)
