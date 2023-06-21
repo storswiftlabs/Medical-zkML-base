@@ -139,7 +139,6 @@ class ParserFile(AbcParser):
     def parser_lymphography(line: str) -> str:
         line = line.replace(',', '\t')
         new_line = line[2:len(line)].replace('\n', '') + '\t' + str(int(line[0]) - 1) + '\n' # noqa E501
-        print(new_line)
         return new_line
 
 

@@ -28,7 +28,7 @@ def dt_to_leo_code(clf: tree.DecisionTreeClassifier, program_name: str):
     node_depth = np.zeros(shape=n_nodes, dtype=np.int64)
     is_leaves = np.zeros(shape=n_nodes, dtype=bool)
     stack = [(0, 0)]
-    while len(stack) > 0:
+    while _len(stack) > 0:
         node_id, depth = stack.pop()
         node_depth[node_id] = depth
         is_split_node = children_left[node_id] != children_right[node_id]

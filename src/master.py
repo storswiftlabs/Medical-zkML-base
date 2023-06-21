@@ -55,5 +55,5 @@ if __name__ == "__main__":
         titanic = pd.read_table(pf.get_save_path(), sep='\t', header=None)
 
         model = Model(titanic)
-        model.get_prediction(len=file['intercept'])
+        model.get_prediction(_len=file['intercept'])
         print('\n')

@@ -12,14 +12,14 @@ class AbcModel(object):
         """
         self.titanic = titanic
 
-    def _get_x_dict(self, len):
+    def _get_x_dict(self, _len):
         """
          Get the interception length dictionary from Titanic. This is used to calculate the x_dict
-         @param len - the length of the dictionary
+         @param _len - the length of the dictionary
          @return dict_vec the dict vectorized to be used in Ruturn the x_dict ( sparse # noqa: E501
         """
 
-        x = self.titanic[[i for i in range(len)]]
+        x = self.titanic[[i for i in range(_len)]]
 
         dict_vec = DictVectorizer(sparse=False)
         return dict_vec.fit_transform(x.to_dict(orient="records"))
@@ -42,12 +42,12 @@ class Model(AbcModel):
         """
         super(Model, self).__init__(titanic)
 
-    def get_prediction(self, len):
+    def get_prediction(self, _len):
         """
          Get predictions for a set of data. This is a function to be used in conjunction with : py : meth : ` ~gensim. models. BayesianModel. get_predictions ` # noqa: E501
-         @param len - The length of the
+         @param _len - The length of the
         """
-        x = self._get_x_dict(len)
+        x = self._get_x_dict(_len)
         y = self._get_y_titanic()
         x_train, x_test, y_train, y_test = train_test_split(
             x, y, test_size=0.2)  # noqa: E501

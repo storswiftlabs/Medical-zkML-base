@@ -22,7 +22,7 @@ def features_list_to_line(features: list):
     s = ""
     for index, ele in enumerate(features):
         s = s + ele
-        if index != len(features) - 1:
+        if index != _len(features) - 1:
             s = s + '\t'
         else:
             s = s + '\n'
@@ -68,7 +68,7 @@ def data_preprocess(data_path):
                 # get feature, struct new line
                 last_feature = feature_two_combine_into_one(line_list[-2], line_list[-1])
                 print(line_list, last_feature)
-                a = line_list[:len(line_list) - 2]
+                a = line_list[:_len(line_list) - 2]
                 a.append(last_feature)
                 new_file.write(features_list_to_line(a))
         return new_path
