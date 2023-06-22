@@ -1,6 +1,6 @@
 import os
 
-from preprocess_data.utils import Utils
+from src.preprocess_data.utils import Utils
 
 
 class AbcParser(object):
@@ -114,10 +114,10 @@ class ParserFile(AbcParser):
             return ""
         if not line.startswith(('1', '2', '3', '4', '5', '6', '7', '8', '9')):
             return ""
-        line = line.replace('abnormal', '0').\
-            replace('normal', '1').\
-            replace('\n', '').\
-            replace(' ', '').\
+        line = line.replace('abnormal', '0'). \
+            replace('normal', '1'). \
+            replace('\n', ''). \
+            replace(' ', ''). \
             replace('\t', '')
         line = line.replace('notpresent', 'False')
         line = line.replace('present', 'True')
@@ -136,13 +136,86 @@ class ParserFile(AbcParser):
         return '\t'.join(line_list) + '\n'
 
     def parser_lymphography(line: str) -> str:
+        if Utils.has_question_mark(line):
+            return ""
         line = line.replace(',', '\t')
-        new_line = line[2:len(line)].replace('\n', '') + '\t' + str(int(line[0]) - 1) + '\n' # noqa E501
+        new_line = line[2:len(line)].replace('\n', '') + '\t' + str(int(line[0]) - 1) + '\n'  # noqa E501
         return new_line
 
+    @staticmethod
+    def parser_breast_cancer(line: str) -> str:
+        if Utils.has_question_mark(line):
+            return ""
+        arr = line.replace('\n', '').split(',')
+        row0 = arr[0].replace('no-recurrence-events', '0'). \
+            replace('recurrence-events', '1')
+        row1 = arr[1].replace('80-89', '9'). \
+            replace('80-89', '8'). \
+            replace('70-79', '7'). \
+            replace('60-69', '6'). \
+            replace('50-59', '5'). \
+            replace('40-49', '4'). \
+            replace('30-39', '3'). \
+            replace('20-29', '2'). \
+            replace('10-19', '1'). \
+            replace('0-9', '0')
+        row2 = arr[2].replace('premeno', '2'). \
+            replace('ge40', '1'). \
+            replace('lt40', '0')
+        row3 = arr[3].replace('55-59', '11'). \
+            replace('50-54', '10'). \
+            replace('45-49', '9'). \
+            replace('40-49', '9'). \
+            replace('40-44', '8'). \
+            replace('35-39', '7'). \
+            replace('30-34', '6'). \
+            replace('25-29', '5'). \
+            replace('20-24', '4'). \
+            replace('15-19', '3'). \
+            replace('10-14', '2'). \
+            replace('5-9', '1'). \
+            replace('0-4', '0')
+        row4 = arr[4].replace('36-39', '12'). \
+            replace('33-35', '11'). \
+            replace('30-32', '10'). \
+            replace('27-29', '9'). \
+            replace('24-26', '8'). \
+            replace('21-23', '7'). \
+            replace('18-20', '6'). \
+            replace('15-17', '5'). \
+            replace('12-14', '4'). \
+            replace('9-11', '3'). \
+            replace('6-8', '2'). \
+            replace('3-5', '1'). \
+            replace('0-2', '0')
+        row5 = arr[5].replace('no', '1'). \
+            replace('yes', '0')
+        row6 = arr[6].replace('3', '2'). \
+            replace('2', '1'). \
+            replace('1', '0')
+        row7 = arr[7].replace('right', '1'). \
+            replace('left', '0')
+        row8 = arr[8].replace('central', '4'). \
+            replace('right_low', '3'). \
+            replace('right_up', '2'). \
+            replace('left_low', '1'). \
+            replace('left_up', '0')
+        row9 = arr[9].replace('no', '1'). \
+            replace('yes', '0')
+        #print(arr)
+        #print(row0, row1, row2, row3, row4, row5, row6, row7, row8, row9)
+        new_line = row1 + '\t' + row2 + '\t' + row3 + '\t' + row4 + '\t' + row5 + '\t' + row6 + '\t' + row7 + '\t' + row8 + '\t' + row9 + '\t' + row0 + '\n'
+        return new_line
+
+    @staticmethod
+    def parser_bupa(line: str) -> str:
+        if Utils.has_question_mark(line):
+            return ""
+        line = line.replace(',', '\t')
+        return line
 
 if __name__ == "__main__":
-    with open('data/Chronic_Kidney_Disease/chronic_kidney_disease.arff',
+    with open('../data/Breast_Cancer/breast-cancer.data',
               mode='r',
               encoding='utf-8') as f:
         lines = f.readlines()

@@ -7,76 +7,74 @@ from sklearn.model_selection import train_test_split
 
 from decision_tree.dt_to_leo_code import dt_to_leo_code
 
-FILE_PATH = os.path.abspath(
-    '../medical-zkML/data/Heart_Disease/processed.cleveland.data')
 
 
-def features_list_to_line(features: list):
-    """
-        Feature from list to line format
-        Parameters:
-            features
-        Returns:
-            line in tsv
-    """
-    s = ""
-    for index, ele in enumerate(features):
-        s = s + ele
-        if index != _len(features) - 1:
-            s = s + '\t'
-        else:
-            s = s + '\n'
-    return s
-
-
-def feature_two_combine_into_one(feature1, feature2):
-    """
-        Feature_two_combine_into_one
-        Feature two combine into one
-        Parameters:
-            feature1, feature2
-        Returns:
-            mix
-        Mixed type:
-            src type:dst type
-            0 0:0
-            1 0:1
-            0 1:2
-            1 1:3
-    """
-    # print("cc debug feature_two_combine_into_one", feature1, feature2, type(feature1))
-    if feature1 == 'False':
-        if feature2 == 'False':
-            return '0'
-        else:
-            return '2'
-    else:
-        if feature2 == 'False':
-            return '1'
-        else:
-            return '3'
-
-
-def data_preprocess(data_path):
-    with open(data_path, 'r', encoding='Utf-16') as file:
-        last_path = os.path.dirname(data_path)
-        lines = file.readlines()
-        new_path = os.path.join(last_path, "new_data.tsv")
-        with open(new_path, 'w+') as new_file:
-            for line in lines:
-                line_list = line.replace('\n', '').replace(',', '.').replace('yes', 'True').replace('no', 'False').split('\t')
-                # get feature, struct new line
-                last_feature = feature_two_combine_into_one(line_list[-2], line_list[-1])
-                print(line_list, last_feature)
-                a = line_list[:_len(line_list) - 2]
-                a.append(last_feature)
-                new_file.write(features_list_to_line(a))
-        return new_path
-
-
-data_path = './data/Acute_Inflammations/diagnosis.data'
-
-new_path = data_preprocess(data_path)
+# def features_list_to_line(features: list):
+#     """
+#         Feature from list to line format
+#         Parameters:
+#             features
+#         Returns:
+#             line in tsv
+#     """
+#     s = ""
+#     for index, ele in enumerate(features):
+#         s = s + ele
+#         if index != len(features) - 1:
+#             s = s + '\t'
+#         else:
+#             s = s + '\n'
+#     return s
+#
+#
+# def feature_two_combine_into_one(feature1, feature2):
+#     """
+#         Feature_two_combine_into_one
+#         Feature two combine into one
+#         Parameters:
+#             feature1, feature2
+#         Returns:
+#             mix
+#         Mixed type:
+#             src type:dst type
+#             0 0:0
+#             1 0:1
+#             0 1:2
+#             1 1:3
+#     """
+#     # print("cc debug feature_two_combine_into_one", feature1, feature2, type(feature1))
+#     if feature1 == 'False':
+#         if feature2 == 'False':
+#             return '0'
+#         else:
+#             return '2'
+#     else:
+#         if feature2 == 'False':
+#             return '1'
+#         else:
+#             return '3'
+#
+#
+# def data_preprocess(data_path):
+#     with open(data_path, 'r', encoding='Utf-16') as file:
+#         last_path = os.path.dirname(data_path)
+#         lines = file.readlines()
+#         new_path = os.path.join(last_path, "new_data.tsv")
+#         with open(new_path, 'w+') as new_file:
+#             for line in lines:
+#                 line_list = line.replace('\n', '').replace(',', '.').replace('yes', 'True').replace('no', 'False').split('\t')
+#                 # get feature, struct new line
+#                 last_feature = feature_two_combine_into_one(line_list[-2], line_list[-1])
+#                 print(line_list, last_feature)
+#                 a = line_list[:len(line_list) - 2]
+#                 a.append(last_feature)
+#                 new_file.write(features_list_to_line(a))
+#         return new_path
+#
+#
+# data_path = './data/Acute_Inflammations/diagnosis.data'
+#
+# new_path = data_preprocess(data_path)
 # with open(data_path, 'r+') as file:
 #     file.write(features_list_to_line(feature))
 titanic = pd.read_table(new_path, sep="\t", header=None)
@@ -115,8 +113,11 @@ print("score", dec_tree.score(x_test, y_test))
 dec_tree.predict(x_test)
 print("Here are the predictions:", dec_tree.predict(x_test))
 
-# generate leo code
-leo = dt_to_leo_code(dec_tree, "dt.aleo")
+# TODO computes the fixed_number in tsv,
+#  and the number of digits in the data determines its size,
+#  for example (0.1 fixed_number is 10 for 0.12 fixed_number is 100).
+# generate leo code, fixed_number by calculate number of decimal places reserved in the input
+leo = dt_to_leo_code(dec_tree, "dt.aleo", fixed_number=10)
 print(leo)
 f = open("autogenerated_dt_model.leo", "w")
 f.write(leo)

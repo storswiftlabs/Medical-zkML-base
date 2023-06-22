@@ -41,8 +41,17 @@ FILE_PATH = [
         'func': ParserFile.parser_lymphography,
         'intercept': 18,
         'encoding': 'utf-8'
-    }
-]
+    }, {
+    'file': 'data/Liver_Disorders/bupa.data',
+    'func': ParserFile.parser_bupa,
+    'intercept': 6,
+    'encoding': 'utf-8'
+}, {
+    'file': 'data/Breast_Cancer/breast-cancer.data',
+    'func': ParserFile.parser_breast_cancer,
+    'intercept': 9,
+    'encoding': 'utf-8'
+}]
 
 # {'file': 'data/Acute_Inflammations/diagnosis.data', 'func': 3}
 if __name__ == "__main__":
@@ -58,7 +67,7 @@ if __name__ == "__main__":
 
         model = Model(titanic)
         dec_tree = model.get_prediction(_len=file['intercept'])
-        leo_code = leo.dt_to_leo_code(dec_tree, 'dt.aleo')
+        leo_code = leo.dt_to_leo_code(dec_tree, 'dt.aleo', 10)
         leo_path = os.path.dirname(file['file']) + r'/' + \
             os.path.dirname(file['file']).split('/')[-1] + '.leo'
         print(leo_path)
