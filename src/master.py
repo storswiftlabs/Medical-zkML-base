@@ -41,17 +41,26 @@ FILE_PATH = [
         'func': ParserFile.parser_lymphography,
         'intercept': 18,
         'encoding': 'utf-8'
-    }, {
-    'file': 'data/Liver_Disorders/bupa.data',
-    'func': ParserFile.parser_bupa,
-    'intercept': 6,
-    'encoding': 'utf-8'
-}, {
-    'file': 'data/Breast_Cancer/breast-cancer.data',
-    'func': ParserFile.parser_breast_cancer,
-    'intercept': 9,
-    'encoding': 'utf-8'
-}]
+    },
+    {
+        'file': 'data/Liver_Disorders/bupa.data',
+        'func': ParserFile.parser_bupa,
+        'intercept': 6,
+        'encoding': 'utf-8'
+    },
+    {
+        'file': 'data/Breast_Cancer/breast-cancer.data',
+        'func': ParserFile.parser_breast_cancer,
+        'intercept': 9,
+        'encoding': 'utf-8'
+    },
+    {
+        'file': 'data/Primary_Tumor/primary-tumor.data',
+        'func': ParserFile.parser_primary_tumor,
+        'intercept': 17,
+        'encoding': 'utf-8'
+    }
+]
 
 # {'file': 'data/Acute_Inflammations/diagnosis.data', 'func': 3}
 if __name__ == "__main__":

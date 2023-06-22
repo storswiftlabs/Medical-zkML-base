@@ -1,6 +1,6 @@
 import os
 
-from src.preprocess_data.utils import Utils
+from preprocess_data.utils import Utils
 
 
 class AbcParser(object):
@@ -109,6 +109,16 @@ class ParserFile(AbcParser):
         return line.replace(',', '\t')
 
     @staticmethod
+    def parser_primary_tumor(line: str) -> str:
+        if Utils.has_question_mark(line):
+            return ""
+        line_list = line.replace('\n', '').split(',')
+        pv = line_list[5]
+        line_list = line_list[:5] + line_list[6:]
+        line_list.append(pv)
+        return '\t'.join(line_list) + '\n'
+
+    @staticmethod
     def parser_chronic_kidney_disease(line: str):
         if Utils.has_question_mark(line):
             return ""
@@ -139,7 +149,8 @@ class ParserFile(AbcParser):
         if Utils.has_question_mark(line):
             return ""
         line = line.replace(',', '\t')
-        new_line = line[2:len(line)].replace('\n', '') + '\t' + str(int(line[0]) - 1) + '\n'  # noqa E501
+        new_line = line[2:len(line)].replace(
+            '\n', '') + '\t' + str(int(line[0]) - 1) + '\n'  # noqa E501
         return new_line
 
     @staticmethod
@@ -213,6 +224,7 @@ class ParserFile(AbcParser):
             return ""
         line = line.replace(',', '\t')
         return line
+
 
 if __name__ == "__main__":
     with open('../data/Breast_Cancer/breast-cancer.data',

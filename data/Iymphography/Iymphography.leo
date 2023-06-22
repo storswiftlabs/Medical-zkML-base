@@ -21,99 +21,95 @@ program dt.aleo {
 	}
 	// Code auto generated from DecisionTreeClassifier using dt_to_leo_code.py 
 	transition main(inputs: Inputs) -> public u32 {
-		if (inputs.p18 < 3u32) {
-			if (inputs.p2 < 2u32) {
-				if (inputs.p15 < 2u32) {
-					if (inputs.p6 < 2u32) {
-						if (inputs.p1 < 2u32) {
+		if (inputs.p15 < 25u32) {
+			if (inputs.p13 < 35u32) {
+				if (inputs.p13 < 15u32) {
+					if (inputs.p18 < 15u32) {
+						if (inputs.p1 < 15u32) {
 							return 0u32;
 						} else {
 							return 1u32;
 						}
 					} else {
-						if (inputs.p1 < 2u32) {
-							return 0u32;
-						} else {
-							return 2u32;
-						}
+						return 2u32;
 					}
 				} else {
-					if (inputs.p8 < 2u32) {
-						if (inputs.p16 < 2u32) {
-							return 1u32;
+					if (inputs.p7 < 15u32) {
+						if (inputs.p13 < 25u32) {
+							if (inputs.p17 < 15u32) {
+								return 1u32;
+							} else {
+								if (inputs.p11 < 25u32) {
+									return 2u32;
+								} else {
+									return 1u32;
+								}
+							}
 						} else {
-							return 2u32;
-						}
-					} else {
-						if (inputs.p11 < 3u32) {
-							return 2u32;
-						} else {
-							if (inputs.p15 < 3u32) {
+							if (inputs.p18 < 35u32) {
 								return 1u32;
 							} else {
 								return 2u32;
 							}
 						}
+					} else {
+						return 3u32;
 					}
 				}
 			} else {
-				if (inputs.p10 < 2u32) {
+				if (inputs.p2 < 15u32) {
 					return 2u32;
 				} else {
-					if (inputs.p13 < 4u32) {
-						return 1u32;
-					} else {
-						if (inputs.p16 < 2u32) {
-							return 2u32;
-						} else {
-							return 1u32;
-						}
-					}
+					return 1u32;
 				}
 			}
 		} else {
-			if (inputs.p15 < 3u32) {
-				if (inputs.p9 <= 2u32) {
-					if (inputs.p18 < 4u32) {
-						return 1u32;
-					} else {
-						if (inputs.p11 < 3u32) {
+			if (inputs.p10 < 25u32) {
+				if (inputs.p9 < 15u32) {
+					if (inputs.p2 < 15u32) {
+						if (inputs.p11 < 25u32) {
 							return 2u32;
 						} else {
 							return 1u32;
+						}
+					} else {
+						if (inputs.p13 < 35u32) {
+							return 1u32;
+						} else {
+							if (inputs.p12 <= 30u32) {
+								return 2u32;
+							} else {
+								return 1u32;
+							}
 						}
 					}
 				} else {
 					return 3u32;
 				}
 			} else {
-				if (inputs.p8 < 2u32) {
-					return 3u32;
-				} else {
-					if (inputs.p14 < 3u32) {
-						if (inputs.p2 < 2u32) {
-							return 2u32;
-						} else {
-							return 1u32;
-						}
-					} else {
-						if (inputs.p3 < 2u32) {
-							if (inputs.p16 < 2u32) {
-								if (inputs.p18 < 5u32) {
-									return 1u32;
-								} else {
-									return 2u32;
-								}
-							} else {
-								return 2u32;
-							}
-						} else {
-							if (inputs.p10 < 4u32) {
+				if (inputs.p18 < 25u32) {
+					if (inputs.p5 < 15u32) {
+						if (inputs.p18 < 15u32) {
+							if (inputs.p12 < 35u32) {
 								return 1u32;
 							} else {
 								return 2u32;
 							}
+						} else {
+							return 2u32;
 						}
+					} else {
+						return 1u32;
+					}
+				} else {
+					if (inputs.p16 < 15u32) {
+						if (inputs.p18 < 45u32) {
+							return 1u32;
+						} else {
+							return 2u32;
+						}
+					} else {
+						return 2u32;
 					}
 				}
 			}

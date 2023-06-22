@@ -8,24 +8,20 @@ program dt.aleo {
 	}
 	// Code auto generated from DecisionTreeClassifier using dt_to_leo_code.py 
 	transition main(inputs: Inputs) -> public u32 {
-		if (inputs.p3 < 1u32) {
-			if (inputs.p1 < 39u32) {
-				return 1u32;
-			} else {
+		if (inputs.p4 < 5u32) {
+			if (inputs.p5 < 5u32) {
 				return 0u32;
+			} else {
+				return 2u32;
 			}
 		} else {
-			if (inputs.p1 < 38u32) {
-				return 0u32;
+			if (inputs.p3 < 5u32) {
+				return 1u32;
 			} else {
-				if (inputs.p2 < 1u32) {
+				if (inputs.p2 < 5u32) {
 					return 2u32;
 				} else {
-					if (inputs.p4 < 1u32) {
-						return 2u32;
-					} else {
-						return 3u32;
-					}
+					return 3u32;
 				}
 			}
 		}
