@@ -22,14 +22,61 @@ program dt.aleo {
 		p20: u32,
 		p21: u32,
 		p22: u32,
-		p23: u32,
 	}
 	// Code auto generated from DecisionTreeClassifier using dt_to_leo_code.py 
 	transition main(inputs: Inputs) -> public u32 {
-		if (inputs.p18 < 1u32) {
-			return 0u32;
+		if (inputs.p19 < -6u32) {
+			if (inputs.p1 < 191u32) {
+				if (inputs.p16 < 26u32) {
+					return 0u32;
+				} else {
+					return 1u32;
+				}
+			} else {
+				return 0u32;
+			}
 		} else {
-			return 1u32;
+			if (inputs.p20 < 1u32) {
+				if (inputs.p18 < 1u32) {
+					return 0u32;
+				} else {
+					if (inputs.p15 < 1u32) {
+						return 0u32;
+					} else {
+						return 1u32;
+					}
+				}
+			} else {
+				if (inputs.p2 < 591u32) {
+					if (inputs.p8 < 1u32) {
+						if (inputs.p1 < 118u32) {
+							if (inputs.p13 < 1u32) {
+								return 0u32;
+							} else {
+								return 1u32;
+							}
+						} else {
+							if (inputs.p4 < 1u32) {
+								return 1u32;
+							} else {
+								return 0u32;
+							}
+						}
+					} else {
+						if (inputs.p17 < 1u32) {
+							if (inputs.p21 < 3u32) {
+								return 1u32;
+							} else {
+								return 0u32;
+							}
+						} else {
+							return 1u32;
+						}
+					}
+				} else {
+					return 0u32;
+				}
+			}
 		}
 	}
 }

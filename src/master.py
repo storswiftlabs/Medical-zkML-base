@@ -20,7 +20,7 @@ FILE_PATH = [
     {
         'file': 'data/Parkinsons/parkinsons.data',
         'func': ParserFile.parser_parkinsons,
-        'intercept': 23,
+        'intercept': 22,
         'encoding': 'utf-8'
     },
     {

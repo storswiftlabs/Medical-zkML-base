@@ -90,7 +90,7 @@ class ParserFile(AbcParser):
 
         if Utils.has_question_mark(line):
             return ""
-        return line.replace(",", "\t").replace("?", "0.0")
+        return line.replace(",", "\t")
 
     @staticmethod
     def parser_parkinsons(line: str) -> str:
@@ -98,7 +98,7 @@ class ParserFile(AbcParser):
             return ""
         line_list = line.replace('\n', '').split(',')[1:]
         status = line_list[-7]
-        new_line = line_list[0:-7] + line_list[-8:]
+        new_line = line_list[0:-7] + line_list[-6:]
         new_line.append(status + '\n')
         return '\t'.join(new_line)
 
@@ -106,8 +106,7 @@ class ParserFile(AbcParser):
     def parser_heart_failure_clinical(line: str):
         if line.startswith('age'):
             return ""
-        line_list = line.replace('\n', '').split(',')
-        return '\t'.join(line_list) + '\n'
+        return line.replace(',', '\t')
 
     @staticmethod
     def parser_chronic_kidney_disease(line: str):
