@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+    # -*- coding: utf-8 -*-
 import pandas as pd
 import os
 
@@ -20,36 +20,25 @@ y = titanic[num_columns-1]
 print(y.head())
 
 # The head fields as training data
-x = titanic[[i for i in range(num_columns-2)]]
+x = titanic[[i for i in range(num_columns-1)]]
 print("*" * 30 + " x " + "*" * 30)
 print(x.head())
 
-# Feature extract - One-hot
-x_dict_list = x.to_dict(orient='records')
-print("*" * 30 + " train_dict " + "*" * 30)
-print(pd.Series(x_dict_list[:10]))
-
-dict_vec = DictVectorizer(sparse=False)
-x = dict_vec.fit_transform(x_dict_list)
-print("*" * 30 + " One-hot " + "*" * 30)
-print(x[:5])
-
 # Divide the training set and test set
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+# x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
 # Create KMeans object
-kMeans = KMeans(init='k-means++', n_clusters=3, n_init=1, random_state=42)
+kMeans = KMeans(init='k-means++', n_clusters=y.nunique(), n_init=1, random_state=42)
 # Train model
-# kMeans.fit(x_train, y_train)
-kMeans.fit_predict(titanic)
-
-# Score
-# print("score", kMeans.score(x_test))
-# print("predict result", kMeans.predict(x_test))
-# print("Real result", y_test)
-
+kMeans.fit(x)
+# kMeans.fit_predict(titanic)
 # Get k-Means label
-labs = kMeans.labels_
-print("label_clf", labs)
+labs = kMeans.predict(x)
+df = pd.DataFrame({'labels': labs, 'y': y})
+print("df", df.values)
+ct = pd.crosstab(df['labels'], df['y'])
+print("ct", ct)
+
+# Visualization↓
 
 # Sort the center point coordinates and save them as DataFrame
 centers = kMeans.cluster_centers_
@@ -58,8 +47,8 @@ print("centers", centers)
 # PCA deal with high dimensional data
 from sklearn.decomposition import PCA
 pca = PCA(n_components=2)
-pca.fit(titanic)
-data_pca = pca.transform(titanic)
+pca.fit(x)
+data_pca = pca.transform(x)
 data_pca = pd.DataFrame(data_pca, columns=['PC1', 'PC2'])
 data_pca.insert(data_pca.shape[1], 'labels', labs)
 
