@@ -62,30 +62,25 @@ class ParserFile(AbcParser):
 
     @staticmethod
     def parser_acute_inflammations(line: str) -> str:
-        line_list = line.replace('no', 'False').replace('yes', 'True').replace(
-            '\n', '').replace(',', '.').split('\t')
+        line_list = line.replace('no', 'False').\
+            replace('yes', 'True').\
+            replace('\n', '').\
+            replace(',', '.').\
+            split('\t')
         new_line_list = line_list[0:-2]
-        if line_list[-2] == 'False':
-            if line_list[-1] == 'False':
-                new_line_list.append('0')
-            else:
-                new_line_list.append('2')
-        else:
-            if line_list[-1] == 'False':
-                new_line_list.append('1')
-            else:
-                new_line_list.append('4')
+        pv = Utils.feature_two_combine_into_one(line_list[-2], line_list[-1])
+        new_line_list.append(pv)
         return '\t'.join(new_line_list) + '\n'
 
     @staticmethod
     def parser_heart_disease(line: str) -> str:
         """
          Parses Heart Disease.
-         Replaces spaces with tabs and question mark with 0.
+         Replace commas with tabs.
 
-         @param line - Line from the text file.
+         @param line - A line in the file is parsed.
 
-         @return Line with spaces replaced
+         @return Organized data rows
         """
 
         if Utils.has_question_mark(line):
@@ -94,13 +89,16 @@ class ParserFile(AbcParser):
 
     @staticmethod
     def parser_parkinsons(line: str) -> str:
-        if line.endswith('PPE\n') and line != "":
+        if line.startswith('name'):
             return ""
+        # Filter the first column of patient names
         line_list = line.replace('\n', '').split(',')[1:]
-        status = line_list[-7]
+        # Get Parkinson's prediction results as the last column of the data
+        # Status - 0 for healthy and 1 for PD.
+        pv = line_list[-7]
         new_line = line_list[0:-7] + line_list[-6:]
-        new_line.append(status + '\n')
-        return '\t'.join(new_line)
+        new_line.append(pv)
+        return '\t'.join(new_line) + '\n'
 
     @staticmethod
     def parser_heart_failure_clinical(line: str):
@@ -113,6 +111,8 @@ class ParserFile(AbcParser):
         if Utils.has_question_mark(line):
             return ""
         line_list = line.replace('\n', '').split(',')
+        # Get predicted value results
+        # histologic-type: epidermoid - 0, adeno - 1, anaplastic - 2
         pv = line_list[5]
         line_list = line_list[:5] + line_list[6:]
         line_list.append(pv)
@@ -120,29 +120,30 @@ class ParserFile(AbcParser):
 
     @staticmethod
     def parser_chronic_kidney_disease(line: str):
+        """
+        column names for predicted values
+        ckd - chronic kidney disease
+        notckd - not chronic kidney disease
+        """
         if Utils.has_question_mark(line):
             return ""
         if not line.startswith(('1', '2', '3', '4', '5', '6', '7', '8', '9')):
             return ""
-        line = line.replace('abnormal', '0'). \
-            replace('normal', '1'). \
-            replace('\n', ''). \
-            replace(' ', ''). \
-            replace('\t', '')
-        line = line.replace('notpresent', 'False')
-        line = line.replace('present', 'True')
-        line = line.replace('notckd', 'False')
-        line = line.replace('yes', 'True')
-        line = line.replace('no', 'False')
-        line = line.replace('poor', 'False')
-        line = line.replace('good', 'True')
-        line_list = line.replace('ckd', 'True').split(',')
+        line_list = line.replace('abnormal', '1').\
+            replace('normal', '0').\
+            replace('\n', '').\
+            replace(' ', '').\
+            replace('\t', '').\
+            replace('notpresent', '0').\
+            replace('present', '1').\
+            replace('notckd', '0').\
+            replace('yes', '0').\
+            replace('no', '1').\
+            replace('poor', '0').\
+            replace('good', '1').\
+            replace('ckd', '1').split(',')
         if len(line_list) != 25:
             return ""
-        # print(line_list)
-        pc = line_list[6]
-        line_list = line_list[:6] + line_list[7:]
-        line_list.append(pc)
         return '\t'.join(line_list) + '\n'
 
     def parser_lymphography(line: str) -> str:
@@ -213,9 +214,11 @@ class ParserFile(AbcParser):
             replace('left_up', '0')
         row9 = arr[9].replace('no', '1'). \
             replace('yes', '0')
-        #print(arr)
-        #print(row0, row1, row2, row3, row4, row5, row6, row7, row8, row9)
-        new_line = row1 + '\t' + row2 + '\t' + row3 + '\t' + row4 + '\t' + row5 + '\t' + row6 + '\t' + row7 + '\t' + row8 + '\t' + row9 + '\t' + row0 + '\n'
+        # print(arr)
+        # print(row0, row1, row2, row3, row4, row5, row6, row7, row8, row9)
+        new_line = row1 + '\t' + row2 + '\t' + row3 + '\t' + row4 + '\t' + \
+            row5 + '\t' + row6 + '\t' + row7 + '\t' + row8 + '\t' + row9 + \
+            '\t' + row0 + '\n'
         return new_line
 
     @staticmethod

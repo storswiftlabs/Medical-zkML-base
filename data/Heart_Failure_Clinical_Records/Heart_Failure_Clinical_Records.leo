@@ -15,159 +15,143 @@ program dt.aleo {
 	}
 	// Code auto generated from DecisionTreeClassifier using dt_to_leo_code.py 
 	transition main(inputs: Inputs) -> public u32 {
-		if (inputs.p12 < 735u32) {
-			if (inputs.p8 < 9u32) {
-				if (inputs.p12 < 705u32) {
-					return 0u32;
-				} else {
+		if (inputs.p12 < 675u32) {
+			if (inputs.p3 < 1095u32) {
+				if (inputs.p9 < 1345u32) {
 					return 1u32;
+				} else {
+					return 0u32;
 				}
 			} else {
-				if (inputs.p12 < 495u32) {
-					if (inputs.p3 <= 20180u32) {
-						if (inputs.p3 <= 560u32) {
-							if (inputs.p3 < 495u32) {
-								return 1u32;
-							} else {
+				if (inputs.p8 < 8u32) {
+					if (inputs.p7 <= 3335000u32) {
+						return 0u32;
+					} else {
+						return 1u32;
+					}
+				} else {
+					if (inputs.p4 < 5u32) {
+						return 1u32;
+					} else {
+						if (inputs.p3 < 1595u32) {
+							if (inputs.p8 < 16u32) {
 								return 0u32;
+							} else {
+								return 1u32;
 							}
 						} else {
-							if (inputs.p12 < 325u32) {
+							if (inputs.p3 < 17555u32) {
 								return 1u32;
 							} else {
-								if (inputs.p3 < 1935u32) {
+								if (inputs.p3 <= 51790u32) {
 									return 0u32;
 								} else {
 									return 1u32;
 								}
 							}
-						}
-					} else {
-						if (inputs.p4 < 5u32) {
-							return 1u32;
-						} else {
-							return 0u32;
-						}
-					}
-				} else {
-					if (inputs.p5 <= 300u32) {
-						return 1u32;
-					} else {
-						if (inputs.p3 <= 32320u32) {
-							return 0u32;
-						} else {
-							return 1u32;
 						}
 					}
 				}
 			}
 		} else {
-			if (inputs.p8 < 16u32) {
-				if (inputs.p1 <= 790u32) {
-					if (inputs.p5 < 325u32) {
-						if (inputs.p7 <= 3000000u32) {
-							if (inputs.p8 < 12u32) {
-								return 0u32;
-							} else {
-								if (inputs.p9 <= 1350u32) {
-									return 0u32;
-								} else {
-									if (inputs.p5 < 275u32) {
-										return 1u32;
-									} else {
-										return 0u32;
-									}
-								}
-							}
-						} else {
-							if (inputs.p7 <= 3160000u32) {
-								return 1u32;
-							} else {
-								if (inputs.p12 < 1795u32) {
-									if (inputs.p12 <= 1070u32) {
-										return 0u32;
-									} else {
-										return 1u32;
-									}
-								} else {
-									return 0u32;
-								}
-							}
-						}
+			if (inputs.p5 < 275u32) {
+				if (inputs.p12 < 785u32) {
+					return 1u32;
+				} else {
+					if (inputs.p3 <= 1440u32) {
+						return 0u32;
 					} else {
-						if (inputs.p8 < 7u32) {
-							if (inputs.p10 < 5u32) {
-								return 1u32;
-							} else {
-								return 0u32;
-							}
-						} else {
-							if (inputs.p7 <= 900000u32) {
-								if (inputs.p10 < 5u32) {
-									return 1u32;
-								} else {
-									return 0u32;
-								}
-							} else {
-								if (inputs.p1 < 695u32) {
+						if (inputs.p7 <= 2725000u32) {
+							if (inputs.p9 < 1385u32) {
+								if (inputs.p8 < 10u32) {
 									return 0u32;
 								} else {
-									if (inputs.p7 <= 3390000u32) {
-										return 0u32;
-									} else {
-										if (inputs.p7 <= 4160000u32) {
+									if (inputs.p12 <= 950u32) {
+										if (inputs.p3 < 2615u32) {
 											return 1u32;
 										} else {
 											return 0u32;
 										}
+									} else {
+										return 1u32;
 									}
 								}
+							} else {
+								return 0u32;
+							}
+						} else {
+							if (inputs.p3 <= 12710u32) {
+								return 0u32;
+							} else {
+								return 1u32;
 							}
 						}
-					}
-				} else {
-					if (inputs.p9 < 1355u32) {
-						if (inputs.p2 < 5u32) {
-							return 1u32;
-						} else {
-							return 0u32;
-						}
-					} else {
-						return 0u32;
 					}
 				}
 			} else {
-				if (inputs.p12 <= 2100u32) {
-					if (inputs.p3 < 625u32) {
-						return 0u32;
-					} else {
-						if (inputs.p4 < 5u32) {
-							if (inputs.p3 <= 840u32) {
+				if (inputs.p8 < 15u32) {
+					if (inputs.p1 <= 790u32) {
+						if (inputs.p7 <= 985000u32) {
+							if (inputs.p9 <= 1410u32) {
 								return 0u32;
 							} else {
-								if (inputs.p9 <= 1320u32) {
-									if (inputs.p3 <= 4060u32) {
-										return 1u32;
-									} else {
-										return 0u32;
-									}
-								} else {
-									return 1u32;
-								}
+								return 1u32;
 							}
 						} else {
-							if (inputs.p3 <= 1810u32) {
+							if (inputs.p8 < 13u32) {
+								return 0u32;
+							} else {
+								if (inputs.p12 < 935u32) {
+									if (inputs.p2 < 5u32) {
+										return 0u32;
+									} else {
+										return 1u32;
+									}
+								} else {
+									return 0u32;
+								}
+							}
+						}
+					} else {
+						if (inputs.p9 < 1355u32) {
+							if (inputs.p2 < 5u32) {
 								return 1u32;
 							} else {
 								return 0u32;
 							}
+						} else {
+							return 0u32;
 						}
 					}
 				} else {
-					if (inputs.p3 < 8905u32) {
-						return 0u32;
+					if (inputs.p1 <= 710u32) {
+						if (inputs.p5 <= 650u32) {
+							if (inputs.p5 < 325u32) {
+								if (inputs.p1 <= 460u32) {
+									return 0u32;
+								} else {
+									return 1u32;
+								}
+							} else {
+								if (inputs.p8 < 36u32) {
+									return 0u32;
+								} else {
+									if (inputs.p7 <= 2335000u32) {
+										return 1u32;
+									} else {
+										return 0u32;
+									}
+								}
+							}
+						} else {
+							return 1u32;
+						}
 					} else {
-						return 1u32;
+						if (inputs.p5 < 475u32) {
+							return 1u32;
+						} else {
+							return 0u32;
+						}
 					}
 				}
 			}

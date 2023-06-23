@@ -27,35 +27,43 @@ program dt.aleo {
 	transition main(inputs: Inputs) -> public u32 {
 		if (inputs.p22 < 2u32) {
 			if (inputs.p2 < 2024u32) {
-				if (inputs.p5 < 1u32) {
+				if (inputs.p17 < 5u32) {
 					return 1u32;
 				} else {
 					return 0u32;
 				}
 			} else {
-				if (inputs.p20 < 3u32) {
+				if (inputs.p20 < 2u32) {
 					return 0u32;
 				} else {
-					return 1u32;
+					if (inputs.p12 < 1u32) {
+						return 1u32;
+					} else {
+						return 0u32;
+					}
 				}
 			}
 		} else {
 			if (inputs.p12 < 1u32) {
 				if (inputs.p1 < 1180u32) {
-					if (inputs.p1 < 1108u32) {
-						return 1u32;
+					if (inputs.p1 < 1124u32) {
+						if (inputs.p11 < 1u32) {
+							return 0u32;
+						} else {
+							return 1u32;
+						}
 					} else {
 						return 0u32;
 					}
 				} else {
-					if (inputs.p9 < 1u32) {
-						if (inputs.p1 < 2115u32) {
+					if (inputs.p12 < 1u32) {
+						if (inputs.p1 < 2123u32) {
 							return 1u32;
 						} else {
-							if (inputs.p22 < 2u32) {
-								return 0u32;
-							} else {
+							if (inputs.p8 < 1u32) {
 								return 1u32;
+							} else {
+								return 0u32;
 							}
 						}
 					} else {
@@ -66,11 +74,7 @@ program dt.aleo {
 				if (inputs.p1 < 2088u32) {
 					return 1u32;
 				} else {
-					if (inputs.p19 < -58u32) {
-						return 0u32;
-					} else {
-						return 1u32;
-					}
+					return 0u32;
 				}
 			}
 		}

@@ -79,7 +79,6 @@ if __name__ == "__main__":
         leo_code = leo.dt_to_leo_code(dec_tree, 'dt.aleo', 10)
         leo_path = os.path.dirname(file['file']) + r'/' + \
             os.path.dirname(file['file']).split('/')[-1] + '.leo'
-        print(leo_path)
         with open(leo_path, mode='w+', encoding='utf8') as f:
             f.writelines(leo_code)
-        print('\n')
+        print()

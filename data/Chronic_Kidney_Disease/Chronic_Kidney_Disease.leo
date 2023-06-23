@@ -27,30 +27,10 @@ program dt.aleo {
 	}
 	// Code auto generated from DecisionTreeClassifier using dt_to_leo_code.py 
 	transition main(inputs: Inputs) -> public u32 {
-		if (inputs.p17 < 42u32) {
-			if (inputs.p13 < 40u32) {
-				return 0u32;
-			} else {
-				if (inputs.p16 <= 83500u32) {
-					if (inputs.p2 <= 1050u32) {
-						return 0u32;
-					} else {
-						return 1u32;
-					}
-				} else {
-					if (inputs.p17 < 30u32) {
-						return 0u32;
-					} else {
-						if (inputs.p15 <= 350u32) {
-							return 1u32;
-						} else {
-							return 0u32;
-						}
-					}
-				}
-			}
+		if (inputs.p15 < 129u32) {
+			return 1u32;
 		} else {
-			if (inputs.p15 <= 340u32) {
+			if (inputs.p12 < 23u32) {
 				return 0u32;
 			} else {
 				return 1u32;
