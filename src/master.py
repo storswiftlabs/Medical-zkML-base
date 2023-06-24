@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from decision_tree.data_analysis import Model
 import decision_tree.dt_to_leo_code as leo
+from decision_tree.dt_to_leo_code import quantize_leo
 from preprocess_data.parser_file import ParserFile
 
 FILE_PATH = [
@@ -73,10 +74,10 @@ if __name__ == "__main__":
         pf.write_to_tsv(lines)
 
         titanic = pd.read_table(pf.get_save_path(), sep='\t', header=None)
-
+        exponent, is_negative = quantize_leo(titanic.iloc[0])
         model = Model(titanic)
         dec_tree = model.get_prediction(_len=file['intercept'])
-        leo_code = leo.dt_to_leo_code(dec_tree, 'dt.aleo', 10)
+        leo_code = leo.dt_to_leo_code(dec_tree, 'dt.aleo', exponent, is_negative)
         leo_path = os.path.dirname(file['file']) + r'/' + \
             os.path.dirname(file['file']).split('/')[-1] + '.leo'
         with open(leo_path, mode='w+', encoding='utf8') as f:
