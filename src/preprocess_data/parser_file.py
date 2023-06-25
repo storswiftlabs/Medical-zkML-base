@@ -62,14 +62,19 @@ class ParserFile(AbcParser):
 
     @staticmethod
     def parser_acute_inflammations(line: str) -> str:
-        line_list = line.replace('no', 'False').\
-            replace('yes', 'True').\
-            replace('\n', '').\
-            replace(',', '.').\
-            split('\t')
+        line_list = line.replace('no', 'False').replace('yes', 'True').replace(
+            '\n', '').replace(',', '.').split('\t')
         new_line_list = line_list[0:-2]
-        pv = Utils.feature_two_combine_into_one(line_list[-2], line_list[-1])
-        new_line_list.append(pv)
+        if line_list[-2] == 'False':
+            if line_list[-1] == 'False':
+                new_line_list.append('0')
+            else:
+                new_line_list.append('2')
+        else:
+            if line_list[-1] == 'False':
+                new_line_list.append('1')
+            else:
+                new_line_list.append('3')
         return '\t'.join(new_line_list) + '\n'
 
     @staticmethod
