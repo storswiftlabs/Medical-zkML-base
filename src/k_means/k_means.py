@@ -1,4 +1,4 @@
-    # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import pandas as pd
 import os
 
@@ -15,19 +15,19 @@ titanic = pd.read_table(new_path, sep="\t", header=None)
 
 num_columns = titanic.shape[1]
 # The last field as perdition args
-print(type(titanic[num_columns-1]))
-y = titanic[num_columns-1]
+print(type(titanic[num_columns - 1]))
+y = titanic[num_columns - 1]
 print(y.head())
 
 # The head fields as training data
-x = titanic[[i for i in range(num_columns-1)]]
+x = titanic[[i for i in range(num_columns - 1)]]
 print("*" * 30 + " x " + "*" * 30)
 print(x.head())
 
 # Divide the training set and test set
 # x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
 # Create KMeans object
-kMeans = KMeans(init='k-means++', n_clusters=y.nunique(), n_init=1, random_state=42)
+kMeans = KMeans(init='k-means++', n_clusters=y.nunique(), n_init=1, random_state=41)
 # Train model
 kMeans.fit(x)
 # kMeans.fit_predict(titanic)

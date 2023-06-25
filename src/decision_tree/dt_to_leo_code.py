@@ -12,9 +12,7 @@ def quantize_leo(line):
             if line[i] < 0:
                 is_negative = True
             continue
-        print("line[i]: ", type(line[i]))
         elem = line[i]
-        print("elem: ", elem)
         temp = len(np.format_float_positional(elem).split('.')[1])
         
         if np.format_float_positional(elem).split('.')[1] == '':
@@ -24,8 +22,6 @@ def quantize_leo(line):
             decimal_places = temp
         if elem < 0.0:
             is_negative = True
-    print("10 ** decimal_places: ", 10 ** decimal_places)
-    print("is_negative: ", is_negative)
     return 10 ** decimal_places, is_negative
 
 
