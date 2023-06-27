@@ -28,9 +28,9 @@ class XGBoost_model(AbcModel):
         y_train = le.fit_transform(y_train)
         reg = XGBC(n_estimators=10).fit(x_train, y_train)
         reg.predict(x_test)
-        print("score", reg.score(x_test, y_test))
+        print("Score", reg.score(x_test, y_test))
         # Get Mean Square Error
-        print(MSE(y_test, reg.predict(x_test)))
+        print("Mean Square Error", MSE(y_test, reg.predict(x_test)))
         # Get feature importance
-        print(reg.feature_importances_)
+        print("Feature importance", reg.feature_importances_)
         return reg

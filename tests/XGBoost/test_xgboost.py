@@ -1,3 +1,4 @@
+import os.path
 import unittest
 
 import pandas as pd
@@ -10,24 +11,29 @@ from decision_tree.dt_to_leo_code import quantize_leo
 
 class TestXGBoostMethods(unittest.TestCase):
 
+
     def test_main(self):
-        # Load dataset
-        new_path = '../../data/Acute_Inflammations/new_data.tsv'
-        titanic = pd.read_table(new_path, sep="\t", header=None)
-        # init model
-        xgb_model = XGBoost_model(titanic)
-        num_columns = titanic.shape[1]
-        # model training
-        xgb = xgb_model.get_prediction(_len=num_columns - 1)
-        fixed_number, is_negative = quantize_leo(titanic.iloc[0])
-        read_xgb_model(xgb, fixed_number, is_negative, num_columns - 1)
+        paths = os.listdir('data')
+        for path in paths:
+            # Load dataset
+            new_path = os.path.join(os.path.join('data', path), 'new_data.tsv')
+            save_path = os.path.dirname(new_path)
+            print(new_path)
+            titanic = pd.read_table(new_path, sep="\t", header=None)
+            # init model
+            xgb_model = XGBoost_model(titanic)
+            num_columns = titanic.shape[1]
+            # model training
+            xgb = xgb_model.get_prediction(_len=num_columns - 1)
+            fixed_number, is_negative = quantize_leo(titanic.iloc[0])
+            read_xgb_model(xgb, save_path, fixed_number, is_negative, num_columns - 1)
 
     def test_data_qua(self):
         """
         generate data by "quantize"
         :return: df data
         """
-        new_path = '../../data/Acute_Inflammations/new_data.tsv'
+        new_path = 'data/Acute_Inflammations/new_data.tsv'
         titanic = pd.read_table(new_path, sep="\t", header=None)
         num_columns = titanic.shape[1]
         # The head five fields as training data

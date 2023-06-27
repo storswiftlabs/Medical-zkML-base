@@ -31,7 +31,8 @@ class XgboostTranspiler(BoostingTranspiler):
             else:
                 for c in range(self.n_classes):
                     class_df = df[df["Tree"] == c].reset_index(drop=True)
-                    self._dfs.append(class_df)
+                    if not class_df.empty:
+                        self._dfs.append(class_df)
 
     def get_leo_ast_nodes(self) -> tp.List[LeoNode]:
         return [self.build_tree(df, df.iloc[0]) for df in self._dfs]
