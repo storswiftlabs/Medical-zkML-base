@@ -14,9 +14,10 @@ class TestXGBoostMethods(unittest.TestCase):
         # Load dataset
         new_path = '../../data/Acute_Inflammations/new_data.tsv'
         titanic = pd.read_table(new_path, sep="\t", header=None)
-
+        # init model
         xgb_model = XGBoost_model(titanic)
         num_columns = titanic.shape[1]
+        # model training
         xgb = xgb_model.get_prediction(_len=num_columns - 1)
         fixed_number, is_negative = quantize_leo(titanic.iloc[0])
         read_xgb_model(xgb, fixed_number, is_negative, num_columns - 1)
