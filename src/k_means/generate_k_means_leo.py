@@ -1,8 +1,6 @@
 import pandas as pd
 from sklearn.cluster import KMeans
 
-from src.decision_tree.dt_to_leo_code import quantize_leo
-
 
 def data_cluster(path):
     titanic = pd.read_table(path, sep="\t", header=None)
@@ -120,17 +118,3 @@ def generate_transition(centers, accuracy, str_list_inputs):
     str_list_inputs.append("\t\treturn min_ele_index;")
     str_list_inputs.append("\t}")
 
-
-# output leo file path
-input_path = 'data/Acute_Inflammations/new_data.tsv'
-main_path = "src/k_means/kMeans/src/main.leo"
-
-# Normal test case from k_means.py
-# dataset = [2, 6]  # New point to be predicted
-# centers = [[1.167, 1.467], [7.333, 9]]  # Each central point cluster
-centers = data_cluster(input_path)
-# Generate leo code
-# generate_input_file(centers, dataset, input_path)
-centers = decimal_significant_digits(centers)
-accuracy, _ = quantize_leo(centers[0])
-generate_main_file(centers, accuracy, main_path)
