@@ -13,7 +13,7 @@ class Int_value(Value):
     def __init__(self, number, int_type: Integer) -> None:
         super().__init__()
         try:
-            if not number.isdigit():
+            if not str(number).isdigit():
                 raise TypeError
             self.value = f"{str(number)}{int_type}"
         except TypeError as e:

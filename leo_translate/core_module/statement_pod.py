@@ -1,5 +1,10 @@
 from abc import ABC, abstractmethod
 
+from leo_translate.core_module.struct_pod import Struct
+from leo_translate.submodule import AllKeyWords, Sign
+
+LET = AllKeyWords.LET.value
+
 
 class Statement(ABC):
     """
@@ -8,35 +13,54 @@ class Statement(ABC):
 
     @abstractmethod
     def get(self):
-        # Get a line code statement
         pass
+        # Get a line code statement
 
 
 class Let(Statement):
-    let_statement = "{let} {variate}: {variate_type} = {variate_body};"
+    # let statement: {let} {variate}: {variate_type} = {variate_body};
 
-    def set(self, let, variate, variate_type, variate_body):
+    def __init__(self, variate, variate_type, variate_body):
         # Get a line code statement
-        self.let_statement = f"{let} {variate}: {variate_type} = {variate_body};"
+        self.let_statement = f"{LET} {variate}: {variate_type} = {variate_body};"
 
     def get(self):
         # Get a line code statement
         return self.let_statement
 
 
-class LetStruct(Let):
-    let_statement = "{let} {variate}: {struct_name} = {variate_body};"
+def struct_body(struct, values: list):
+    # Generates struct body from the struct object and values
+    struct_name = struct.struct_name
+    struct_body_multi_lines = f"{struct_name}{Sign.LEFT_BRACE.value}"
+    for i, (field_name, field_type) in enumerate(struct.name_and_type.items()):
+        if i == len(values) - 1:
+            # last line
+            struct_body_multi_lines += f"{field_name}{Sign.COLON.value} {values[i]}{field_type}{Sign.RIGHT_BRACE.value}"
+        else:
+            struct_body_multi_lines += f"{field_name}{Sign.COLON.value} {values[i]}{field_type}{Sign.COMMA.value} "
+    return struct_body_multi_lines
 
-    def set(self, let, variate, struct_obj, values):
+
+class LetStruct(Statement):
+    # struct statement: {let} {variate}: {struct_name} = {variate_body};
+    def __init__(self, variate, struct_obj: Struct, values: list):
         # Get a line code statement
-        # todo struct class "get_struct()" ".name".     LetStruct function struct_body
-        struct = struct_obj.get_struct()
-        self.let_statement = f"{let} {variate}: {struct_obj.name} = {self.struct_body(struct, values)};"
+        if len(values) != len(struct_obj.name_and_type):
+            raise IndexError(
+                "statement_pod::LetStruct::__init__: \"Inputs 'values' unequal to the field of the struct\"")
+        self.let_statement = f"{LET} {variate}: {struct_obj.struct_name} = {struct_body(struct_obj, values)};"
 
     def get(self):
         # Get a line code statement
         return self.let_statement
 
-    def struct_body(self, struct, values: list):
-        # Generates struct body from the struct object and values
-        pass
+
+class ReturnStatement(Statement):
+    def __init__(self, value: str):
+        # Get a line code statement, value: struct, Value, variate
+        self.let_statement = f"{AllKeyWords.RETURN.value} {value};"
+
+    def get(self):
+        # Get a line code statement
+        return self.let_statement

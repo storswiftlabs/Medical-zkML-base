@@ -8,6 +8,7 @@ class AllKeyWords(Enum):
     ASSERT_NEQ = 'assert_neq'
     ASSERT_EQ = 'assert_eq'
     THEN = 'then'
+    RETURN = 'return'
     """
     "\t" number +1 key words
     """
