@@ -28,5 +28,3 @@ class Sign(Enum):
     AND = '&'
     OR = '|'
     XOR = '^'
-
-

@@ -1,7 +1,7 @@
 import unittest
 
-from leo_translate.core_module.value_pod import Int_value, BoolValue
-from leo_translate.submodule.base_type import Integer, Boolean
+from leo_translate.core_module import Int_value, BoolValue
+from leo_translate.submodule import Integer, Boolean
 
 
 class TestValueMethods(unittest.TestCase):

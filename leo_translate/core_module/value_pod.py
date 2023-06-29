@@ -12,7 +12,12 @@ class Value(ABC):
 class Int_value(Value):
     def __init__(self, number, int_type: Integer) -> None:
         super().__init__()
-        self.value = f"{number}{int_type}"
+        try:
+            if not number.isdigit():
+                raise TypeError
+            self.value = f"{str(number)}{int_type}"
+        except TypeError as e:
+            raise TypeError("value_pod::Int_value::number: \"First input data type isn't integer\"")
 
     def get(self) -> str:
         return self.value
