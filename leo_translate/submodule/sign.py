@@ -24,6 +24,7 @@ class Sign(Enum):
     LEFT_SHIFT = '<<'
     RIGHT_SHIFT = '>>'
     COMMA = ','
+    POINT = '.'
     NOT = '!'
     AND = '&'
     OR = '|'

@@ -9,6 +9,7 @@ class AllKeyWords(Enum):
     ASSERT_EQ = 'assert_eq'
     THEN = 'then'
     RETURN = 'return'
+    ALEO = 'aleo'
     """
     "\t" number +1 key words
     """

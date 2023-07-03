@@ -12,5 +12,5 @@ class Struct:
         struct_multi_lines = f"{AllKeyWords.STRUCT.value} {str(self.struct_name)} {Sign.LEFT_BRACE.value} \n"
         for k, v in self.name_and_type.items():
             struct_multi_lines += f"{k}{Sign.COLON.value} {v}{Sign.SEMICOLON.value}\n"
-        struct_multi_lines += f"{Sign.RIGHT_BRACE.value}"
+        struct_multi_lines += f"{Sign.RIGHT_BRACE.value}\n"
         return struct_multi_lines

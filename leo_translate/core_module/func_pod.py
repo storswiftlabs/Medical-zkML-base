@@ -32,13 +32,13 @@ class Function(Func):
         body = ""
         for line in self.body:
             body += line + '\n'
-        return f"{self.head_line}\n{body}{self.end_line}"
+        return f"{self.head_line}\n{body}{self.end_line}\n"
 
 
 class Transition(Func):
     # struct function: {let} {variate}: {struct_name} = {variate_body};
 
-    def __init__(self, variate, inputs: str, result_type, body):
+    def __init__(self, variate: str = "main", inputs: str = "", result_type="", body=""):
         # Get a line code function
         self.inputs = inputs
         self.head_line = f"{AllKeyWords.TRANSITION.value} {variate} {Sign.LEFT_PARENTHESIS.value}{self.inputs}" \
@@ -51,7 +51,7 @@ class Transition(Func):
         body = ""
         for line in self.body:
             body += line + '\n'
-        return f"{self.head_line}\n{body}{self.end_line}"
+        return f"{self.head_line}\n{body}{self.end_line}\n"
 
 
 class Finalize(Func):
@@ -72,4 +72,4 @@ class Finalize(Func):
         body = ""
         for line in self.body:
             body += line + '\n'
-        return f"{self.head_line}\n{body}{self.end_line}"
+        return f"{self.head_line}\n{body}{self.end_line}\n"

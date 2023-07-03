@@ -30,7 +30,8 @@ class TestFuncMethods(unittest.TestCase):
         assert l.get() == """function get_function (x: u32) -> u32 {
 let a: u32 = 9u32;
 return 2u32;
-}"""
+}
+"""
 
     def test_transition(self):
         variate = 'get_function'
@@ -42,7 +43,8 @@ return 2u32;
         assert l.get() == """transition get_function (x: u32) -> u32 {
 let a: u32 = 9u32;
 return 2u32;
-}"""
+}
+"""
 
 
 if __name__ == '__main__':
