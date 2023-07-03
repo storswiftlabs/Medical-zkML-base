@@ -3,6 +3,7 @@ import unittest
 from leo_translate.context import Leo_context
 from leo_translate.core_module import Struct, Transition
 from leo_translate.submodule import Integer, Sign
+from leo_translate.utils.utils import table_format_control
 from tests.leo_translate.core_module.test_func import generate_body
 
 
@@ -51,10 +52,12 @@ return 2u32;
         context.add_transition(variate, inputs, u32, generate_body())
         context.add_function(variate, inputs, u32, generate_body())
 
-        leo_lines = ""
-        for line in context.generate_leo_code_list():
-            leo_lines += line
-        print(leo_lines)
+        data_arr = context.generate_leo_code_list()
+        data_arr = table_format_control(data_arr)
+        transition_str = ""
+        for line in data_arr:
+            transition_str += line
+        print(transition_str)
 
 
 if __name__ == '__main__':

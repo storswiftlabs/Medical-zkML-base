@@ -57,10 +57,10 @@ return 3u32;
 }
 }"""
 
-        data_arr = data.replace('\t', '').split('\n')
-        data_arr = table_format_control(data_arr)
+        data_arr = table_format_control(data)
         with open('test.leo', mode='w+', encoding='utf-8') as file:
-            file.write('\n'.join(data_arr))
+            for line in data_arr:
+                file.write(line)
 
 
 if __name__ == '__main__':
