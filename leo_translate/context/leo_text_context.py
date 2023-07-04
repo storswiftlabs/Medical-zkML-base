@@ -13,7 +13,7 @@ class Leo_context:
         """
         self.function_list = []
         self.struct_list = []
-        self.variates = dict
+        self.variates = dict()
 
     def add_struct(self, struct_name, name_and_type: dict):
         # Define a structure
@@ -59,6 +59,12 @@ class Leo_context:
 
     def generate_finalize(self):
         pass
+
+    def get_struct_by_name(self, struct_name):
+        for struct_obj in self.struct_list:
+            if struct_obj.struct_name == struct_name:
+                return struct_obj
+        return False
 
     def generate_leo_code_list(self, leo_name="main"):
         leo_lines = []
