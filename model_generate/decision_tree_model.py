@@ -32,7 +32,7 @@ class AbcModel(object):
         return self.titanic.iloc[:, -1]
 
 
-class Model(AbcModel):
+class DecisionTreeModel(AbcModel):
 
     def __init__(self, titanic) -> None:
         """
@@ -40,7 +40,7 @@ class Model(AbcModel):
          @param titanic - A reference to the Titanic object.
          @return True if initialization succeeded False otherwise. Note that a Model is not initialized in this case it will return None # noqa: E501
         """
-        super(Model, self).__init__(titanic)
+        super(DecisionTreeModel, self).__init__(titanic)
 
     def get_prediction(self, _len):
         """

@@ -1,7 +1,3 @@
-import re
-
-from leo_translate.submodule.key_words import AllKeyWords
-
 
 def table_format_control(data):
     """

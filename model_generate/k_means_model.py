@@ -3,17 +3,18 @@ import pandas as pd
 from sklearn.decomposition import PCA
 from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
-from src.decision_tree.data_analysis import AbcModel
+
+from model_generate.decision_tree_model import AbcModel
 
 
-class KMeans_model(AbcModel):
+class KMeansModel(AbcModel):
     def __init__(self, titanic) -> None:
         """
          Initialize the model. This is called by Titanic to initialize the model. If you don't want to do anything with the model you can call super (). __init__ () # noqa: E501
          @param titanic - A reference to the Titanic object.
          @return True if initialization succeeded False otherwise. Note that a Model is not initialized in this case it will return None # noqa: E501
         """
-        super(KMeans_model, self).__init__(titanic)
+        super(KMeansModel, self).__init__(titanic)
 
     def get_data_cluster(self, _len):
         """
