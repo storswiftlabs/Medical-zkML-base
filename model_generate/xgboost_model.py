@@ -1,10 +1,11 @@
-from decision_tree.data_analysis import AbcModel
 from xgboost import XGBClassifier as XGBC, XGBRegressor as XGBR
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error as MSE
 
+from model_generate.decision_tree_model import AbcModel
 
-class XGBoost_model(AbcModel):
+
+class XGBoostModel(AbcModel):
 
     def __init__(self, titanic) -> None:
         """
@@ -12,7 +13,7 @@ class XGBoost_model(AbcModel):
          @param titanic - A reference to the Titanic object.
          @return True if initialization succeeded False otherwise. Note that a Model is not initialized in this case it will return None # noqa: E501
         """
-        super(XGBoost_model, self).__init__(titanic)
+        super(XGBoostModel, self).__init__(titanic)
 
     def get_prediction(self, _len):
         """

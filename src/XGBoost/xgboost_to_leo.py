@@ -1,6 +1,5 @@
 from xgboost import XGBClassifier as XGBC, XGBRegressor as XGBR
 
-from decision_tree.dt_to_leo_code import dt_to_leo_code
 from .leo_transpiler.boostings import XgboostTranspiler
 
 MODEL_NAME = 'XGBoost'

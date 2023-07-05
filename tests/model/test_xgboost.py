@@ -4,13 +4,12 @@ import unittest
 import pandas as pd
 from sklearn.feature_extraction import DictVectorizer
 
-from XGBoost.xgboost_model import XGBoost_model
 from XGBoost.xgboost_to_leo import read_xgb_model
-from decision_tree.dt_to_leo_code import quantize_leo
+from model_generate import XGBoostModel
+from utils.utils import quantize_leo
 
 
 class TestXGBoostMethods(unittest.TestCase):
-
 
     def test_main(self):
         paths = os.listdir('data')
@@ -20,10 +19,10 @@ class TestXGBoostMethods(unittest.TestCase):
             save_path = os.path.dirname(new_path)
             print(new_path)
             titanic = pd.read_table(new_path, sep="\t", header=None)
-            # init model
-            xgb_model = XGBoost_model(titanic)
+            # init model_generate
+            xgb_model = XGBoostModel(titanic)
             num_columns = titanic.shape[1]
-            # model training
+            # model_generate training
             xgb = xgb_model.get_prediction(_len=num_columns - 1)
             fixed_number, is_negative = quantize_leo(titanic.iloc[0])
             read_xgb_model(xgb, save_path, fixed_number, is_negative, num_columns - 1)
@@ -44,7 +43,6 @@ class TestXGBoostMethods(unittest.TestCase):
         dict_vec = DictVectorizer(sparse=False)
         c = dict_vec.fit_transform(x.to_dict(orient="records"))
 
-        import numpy as np
         df = pd.DataFrame(c)
         print(df)
         features = []
