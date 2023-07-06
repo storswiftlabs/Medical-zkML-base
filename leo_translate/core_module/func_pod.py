@@ -21,6 +21,7 @@ class Function(Func):
 
     def __init__(self, variate, inputs: str, result_type, body: list):
         # Get a line code function
+        self.variate = variate
         self.inputs = inputs
         self.head_line = f"{AllKeyWords.FUNCTION.value} {variate} {Sign.LEFT_PARENTHESIS.value}{self.inputs}" \
                          f"{Sign.RIGHT_PARENTHESIS.value} {Sign.RESULT.value} {result_type} {Sign.LEFT_BRACE.value}"

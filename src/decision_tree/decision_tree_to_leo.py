@@ -4,7 +4,7 @@ import numpy as np
 from sklearn import tree
 
 from leo_translate.context import Leo_context
-from leo_translate.core_module import Int_value
+from leo_translate.core_module import Int_value, ReturnStatement
 from leo_translate.core_module.control_pod import IfControl, ElseControl
 from leo_translate.submodule import Integer, Sign
 from leo_translate.utils.utils import table_format_control
@@ -68,13 +68,15 @@ def generate_body(children_left, children_right, feature, threshold, values, fix
     def build_tree(head):
         control_tree = []
         # build_tree(head)
+        nodes_values = math.ceil(values[head] * fixed_number)
+        right_type = Integer.INT32.value if is_negative else Integer.UINT32.value
         if is_leaves[head]:
-            control_tree.append(f"return {values[head]}u32;")
+            res = ReturnStatement(Int_value(nodes_values, right_type).get()).get()
+            control_tree.append(res)
             return control_tree
         nodes_threshold = math.ceil(threshold[head] * fixed_number)
         comp = Sign.LESS_THAN.value if int(threshold[head]) != threshold[head] else Sign.LESS_THAN_OR_EQUAL.value
         left_value = f'{variate}{Sign.POINT.value}{inputs[feature[head]]}'
-        right_type = Integer.INT32.value if is_negative else Integer.UINT32.value
         right_value = Int_value(nodes_threshold, right_type).get()
         if_control = IfControl(left_value, right_value, sign=comp,
                                body="\n".join(build_tree(children_left[head]))
