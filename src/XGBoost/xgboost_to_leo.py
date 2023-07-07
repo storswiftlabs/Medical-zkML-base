@@ -10,46 +10,8 @@ from leo_translate.core_module import Int_value, Let, ReturnStatement
 from leo_translate.core_module.control_pod import IfControl, ElseControl
 from leo_translate.submodule import Integer, Sign
 from leo_translate.utils import table_format_control
-from XGBoost.leo_transpiler.boostings import XgboostTranspiler
-from utils.utils import quantize_leo
 
 MODEL_NAME = 'XGBoost'
-
-
-def read_xgb_model(xgb_model: XGBC, save_path, fixed_number: int, is_negative: bool, x_len):
-    booster = xgb_model.get_booster()
-    features = []
-    for i in range(x_len):
-        features.append('c' + str(i))
-    booster.feature_names = features
-    transpiler = XgboostTranspiler(xgb_model, quantize_bits=32)
-    transpiler.save_code(save_path, program_name="xgboost")
-
-
-def node_id_to_idx(node_id: str) -> int:
-    return int(node_id.split("-")[1])
-
-
-# def build_tree(df, df_node):
-#     feature_name = df_node["Feature"]
-#     if feature_name != "Leaf":
-#         if_node_id = df_node["Yes"]
-#         else_node_id = df_node["No"]
-#
-#         if_node = df.iloc[node_id_to_idx(if_node_id)]
-#         else_node = df.iloc[node_id_to_idx(else_node_id)]
-#
-#         value = quantize_leo(df_node["Split"])
-#
-#         condition = f"inputs.{feature_name} < {value}"
-#
-#         left = build_tree(df, if_node)
-#         right = build_tree(df, else_node)
-#         return LeoIfElseNode(condition, left, right)
-#     else:
-#         value = quantize(df_node["Gain"], self.quantize_bits)
-#         return LeoReturnNode(value)
-
 
 def get_is_leaves(dfs):
     trees = []
@@ -136,10 +98,11 @@ def data_construction(boost, is_classification, struct_name):
     dfs = []
     trees = boost.get_booster()
     n_estimators = boost.n_estimators
-    n_classes = boost.n_classes_
+    n_classes = 1
     for i in range(n_estimators):
         df = trees[i].trees_to_dataframe()
         if is_classification:
+            n_classes = boost.n_classes_
             for c in range(n_classes):
                 class_df = df[df["Tree"] == c].reset_index(drop=True)
                 if not class_df.empty:
@@ -179,7 +142,7 @@ def generate_functions_body(n_estimators, n_classes, is_leaves_est, threshold_es
     return functions_body
 
 
-def generate_transition_body(context, input1, result_type):
+def generate_transition_body(context, first_input_arg, result_type, is_classification, n_classes):
     transition_body = []
     function_list = context.function_list
     let_variate_list = []
@@ -187,18 +150,47 @@ def generate_transition_body(context, input1, result_type):
         let_variate = func.variate.replace("class", "_class")
         let_variate_list.append(let_variate)
         let_variate_type = Integer.INT32.value
-        let_variate_body = f"{func.variate}{Sign.LEFT_PARENTHESIS.value}{input1}{Sign.RIGHT_PARENTHESIS.value}"
+        let_variate_body = f"{func.variate}{Sign.LEFT_PARENTHESIS.value}{first_input_arg}{Sign.RIGHT_PARENTHESIS.value}"
         transition_body.append(Let(let_variate, let_variate_type, let_variate_body).get())
-    # for
-    res_variate = "res"
-    res_variate_type = Integer.INT32.value
-    res_variate_body = ""
-    for index, let_variate in enumerate(let_variate_list):
-        res_variate_body += f"{let_variate}"
-        if index != len(let_variate_list) - 1:
-            res_variate_body += f" {Sign.ADD.value} "
-    transition_body.append(Let(res_variate, res_variate_type, res_variate_body).get())
-    transition_body.append(ReturnStatement(res_variate).get())
+    if not is_classification:
+        # for range and add all data
+        res_variate = "res"
+        res_variate_type = result_type
+        res_variate_body = ""
+        for index, let_variate in enumerate(let_variate_list):
+            res_variate_body += f"{let_variate}"
+            if index != len(let_variate_list) - 1:
+                res_variate_body += f" {Sign.ADD.value} "
+        transition_body.append(Let(res_variate, res_variate_type, res_variate_body).get())
+        transition_body.append(ReturnStatement(res_variate).get())
+    else:
+        i32 = Integer.INT32.value
+        res_variate = "res"
+        max_ele = "max_ele_index"
+        # let: Calculate the sum of the class
+        for index in range(n_classes):
+            class_list = []
+            for let_variate in let_variate_list:
+                if f"class{index}" in let_variate:
+                    class_list.append(let_variate)
+            class_variate_body = ""
+            class_variate = "c" + str(index)
+            class_variate_type = i32
+            for class_index, let_variate in enumerate(class_list):
+                class_variate_body += f"{let_variate}"
+                if class_index != len(class_list) - 1:
+                    class_variate_body += f" {Sign.ADD.value} "
+            transition_body.append(Let(class_variate, class_variate_type, class_variate_body).get())
+        # if else control: get max res
+        transition_body.append(Let(max_ele, i32, "c0").get())
+        transition_body.append(Let(res_variate, i32, Int_value(0, i32).get()).get())
+        for index in range(1, n_classes):
+            left_value = "c" + str(index)
+            right_value = max_ele
+            sign = Sign.GREATER_THAN.value
+            body = f"{max_ele} = {left_value};\n{res_variate} = {str(index)}{i32};"
+            transition_body.append(IfControl(left_value, right_value, sign, body).get())
+        transition_body.append(ReturnStatement(res_variate).get())
     return transition_body
 
 
@@ -229,20 +221,12 @@ def xgboost_leo_code(boost, fixed_number: int = 1, is_classification: bool = Tru
         inputs = f"{input1}{Sign.COLON.value} {struct_name}"
         context.add_function(variate, inputs, result_type, body=tree)
 
-    # # classification
-    # if is_classification:
-    #     probas_name_and_type = {}
-    #     n_classes: tp.Optional[int] = hasattr(boost, "n_classes_") and boost.n_classes_ or None
-    #     for index in range(n_classes):
-    #         probas_name_and_type["class_" + str(index) + "_proba"] = i32
-    #     context.add_struct("Probas", probas_name_and_type)
-
     # Add transition and body
     variate = 'main'
     result_type = Integer.INT32.value
     input1 = struct_name.lower()
     inputs = f"{input1}{Sign.COLON.value} {struct_name}"
-    transition_body = generate_transition_body(context, input1, result_type)
+    transition_body = generate_transition_body(context, input1, result_type, is_classification, n_classes)
     context.add_transition(variate, inputs, result_type, transition_body)
 
     # leo code generate
