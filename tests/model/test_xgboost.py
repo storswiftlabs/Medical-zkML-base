@@ -30,7 +30,7 @@ class TestXGBoostMethods(unittest.TestCase):
             break
 
     def test_xgboost_new(self):
-        leo_name = "main"
+        leo_name = "xgboost"
         is_classification = True
         paths = os.listdir('data')
         for path in paths:
@@ -47,7 +47,7 @@ class TestXGBoostMethods(unittest.TestCase):
             xgb = xgb_model.get_prediction(data_len=num_columns - 1, model_type=model_type)
             fixed_number, is_negative = quantize_leo(titanic.iloc[0])
             leo_code = xgboost_leo_code(xgb, fixed_number, is_classification, leo_name)
-            with open(f"./main_{path}.leo", "w") as f:
+            with open(f"./{path}.leo", "w") as f:
                 for line in leo_code:
                     f.write(line)
 

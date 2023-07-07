@@ -66,8 +66,9 @@ class Leo_context:
                 return struct_obj
         return False
 
-    def generate_leo_code_list(self, leo_name="main"):
+    def generate_leo_code_list(self, leo_name="main", fixed_number=1):
         leo_lines = []
+        leo_lines.append(f"// Fixed number is {fixed_number}\n")
         leo_lines.append(
             f"{AllKeyWords.PROGRAM.value} {leo_name}{Sign.POINT.value}{AllKeyWords.ALEO.value}{Sign.LEFT_BRACE.value}\n")
         # Fill struct definition

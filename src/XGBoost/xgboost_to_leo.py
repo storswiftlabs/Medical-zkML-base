@@ -187,7 +187,7 @@ def generate_transition_body(context, input1, result_type):
         let_variate = func.variate.replace("class", "_class")
         let_variate_list.append(let_variate)
         let_variate_type = Integer.INT32.value
-        let_variate_body = f"{func.variate}{Sign.LEFT_BRACE.value}{input1}{Sign.RIGHT_BRACE.value}"
+        let_variate_body = f"{func.variate}{Sign.LEFT_PARENTHESIS.value}{input1}{Sign.RIGHT_PARENTHESIS.value}"
         transition_body.append(Let(let_variate, let_variate_type, let_variate_body).get())
     # for
     res_variate = "res"
@@ -246,6 +246,6 @@ def xgboost_leo_code(boost, fixed_number: int = 1, is_classification: bool = Tru
     context.add_transition(variate, inputs, result_type, transition_body)
 
     # leo code generate
-    leo_code_list = context.generate_leo_code_list(leo_name)
+    leo_code_list = context.generate_leo_code_list(leo_name, fixed_number)
     # code table format
     return table_format_control(leo_code_list)
