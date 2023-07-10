@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.feature_extraction import DictVectorizer
 
 from XGBoost.xgboost_to_leo import xgboost_leo_code
+from leo_translate.utils.utils import data_control
 from model_generate import XGBoostModel
 from utils.utils import quantize_leo
 
@@ -25,7 +26,6 @@ class TestXGBoostMethods(unittest.TestCase):
         for path in paths:
             # Load dataset
             new_path = os.path.join(os.path.join('data', path), 'new_data.tsv')
-            save_path = os.path.dirname(new_path)
             print(new_path)
             titanic = pd.read_table(new_path, sep="\t", header=None)
             # init model_generate
@@ -33,9 +33,9 @@ class TestXGBoostMethods(unittest.TestCase):
             num_columns = titanic.shape[1]
             # model_generate training
             xgb = xgb_model.get_prediction(data_len=num_columns - 1, model_type=model_type)
-            fixed_number, is_negative = quantize_leo(titanic.iloc[0])
-            leo_code = xgboost_leo_code(xgb, fixed_number, is_classification, leo_name)
-            with open(f"./{path}.leo", "w") as f:
+            dc = data_control(titanic.iloc[0])
+            leo_code = xgboost_leo_code(xgb, dc, is_classification, leo_name)
+            with open(f"tests/XGBoost/{path}.leo", "w") as f:
                 for line in leo_code:
                     f.write(line)
 

@@ -3,6 +3,7 @@ import unittest
 
 import pandas as pd
 
+from leo_translate.utils.utils import data_control
 from model_generate import DecisionTreeModel
 from src.decision_tree.decision_tree_to_leo import gene_name_and_type, dt_to_leo
 from utils.utils import quantize_leo
@@ -15,15 +16,23 @@ class TestDecisionTreeMethods(unittest.TestCase):
         print(gene_name_and_type(0, 10))
 
     def test_main(self):
-        MODEL_NAME = 'main'
-        titanic = pd.read_table("data/Acute_Inflammations/new_data.tsv", sep='\t', header=None)
-        fix_number, is_negative = quantize_leo(titanic.iloc[0])
-        model = DecisionTreeModel(titanic)
-        num_columns = titanic.shape[1]
-        dec_tree = model.get_prediction(_len=num_columns - 1)
+        paths = os.listdir('data')
+        for path in paths:
+            # Load dataset
+            new_path = os.path.join(os.path.join('data', path), 'new_data.tsv')
+            print("new_path: ", new_path)
+            MODEL_NAME = 'dt'
+            titanic = pd.read_table(new_path, sep='\t', header=None)
 
-        dt = dt_to_leo(dec_tree, fix_number, is_negative, MODEL_NAME)
-        print("".join(dt))
+            dc = data_control(titanic.iloc[0])
+            model = DecisionTreeModel(titanic)
+            num_columns = titanic.shape[1]
+            dec_tree = model.get_prediction(_len=num_columns - 1)
+
+            dt = dt_to_leo(dec_tree, dc, MODEL_NAME)
+            leo_path = "tests/dt/" + new_path.split("\\")[1] + ".leo"
+            with open(leo_path, 'w+') as file:
+                file.writelines(''.join(dt))
 
     def test_export(self):
         import matplotlib.pyplot as plt

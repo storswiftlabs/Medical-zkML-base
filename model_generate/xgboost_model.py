@@ -31,7 +31,9 @@ class XGBoostModel(AbcModel):
             reg = XGBC(n_estimators=10).fit(x_train, y_train)
         else:
             reg = XGBR(n_estimators=10).fit(x_train, y_train)
-        print(reg.predict(x_test))
+        # Get Predict Result
+        print("predict result", reg.predict(x_test))
+        # Get Score
         print("Score", reg.score(x_test, y_test))
         # Get Mean Square Error
         print("Mean Square Error", MSE(y_test, reg.predict(x_test)))
