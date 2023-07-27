@@ -59,7 +59,7 @@ def get_next_node():
 
 
 def generate_body(children_left, children_right, feature, threshold, values, fixed_number, is_negative, variate,
-                  struct_name, context, is_leaves, leo_display_type):
+                  struct_name, context, is_leaves, leo_display_type, method):
     # get inputs list, use likes {variate}{Sign.POINT.value}{inputs[i]}
     inputs = context.get_struct_by_name(struct_name)
     if inputs:
@@ -68,12 +68,16 @@ def generate_body(children_left, children_right, feature, threshold, values, fix
     def build_tree(head):
         control_tree = []
         # build_tree(head)
-        nodes_values = math.ceil(values[head] * fixed_number)
-        right_type = Integer.INT32.value if is_negative else Integer.UINT32.value
+        res = ''
         if is_leaves[head]:
-            res = ReturnStatement(Int_value(nodes_values, leo_display_type).get()).get()
-            control_tree.append(res)
-            return control_tree
+            if method == "transition":
+                res = ReturnStatement(Int_value(values[head], leo_display_type).get()).get()
+                control_tree.append(res)
+                return control_tree
+            elif method == "function":
+                res = ReturnStatement(Int_value(math.ceil(values[head] * fixed_number), leo_display_type).get()).get()
+                control_tree.append(res)
+                return control_tree
         nodes_threshold = math.ceil(threshold[head] * fixed_number)
         comp = Sign.LESS_THAN.value if int(threshold[head]) != threshold[head] else Sign.LESS_THAN_OR_EQUAL.value
         left_value = f'{variate}{Sign.POINT.value}{inputs[feature[head]]}'
@@ -105,7 +109,7 @@ def dt_to_leo(clf: tree.DecisionTreeClassifier, dc: data_control, leo_name: str 
     input1 = 'inputs'
     inputs = f"{input1}{Sign.COLON.value} {struct_name}"
     body = generate_body(children_left, children_right, feature, threshold, values, dc.fixed_number, dc.is_negative,
-                         input1, struct_name, leo, is_leaves, dc.display_type)
+                         input1, struct_name, leo, is_leaves, dc.display_type, "transition")
 
     leo.add_transition(variate, inputs, dc.display_type, body)
 
