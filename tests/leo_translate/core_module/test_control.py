@@ -10,9 +10,9 @@ class TestControlMethods(unittest.TestCase):
     def test_if(self):
         output = ''
         output += IfControl('inputs.p1', '0'+str(Integer.UINT32.value), str(Sign.GREATER_THAN.value), str(AllKeyWords.RETURN.value)+" true;").get()
-        # print(output)
+        print(output)
         assert output == """if ( inputs.p1 > 0u32 ) { 
-return true; 
+return true;
 } """
 
     def test_if_else(self):
@@ -21,7 +21,7 @@ return true;
         output += ElseControl(str(AllKeyWords.RETURN.value)+" false;").get()
         print(output)
         assert output == """if ( inputs.p1 > 0u32 ) { 
-return true; 
+return true;
 } else { 
 return false;
 } """
@@ -33,8 +33,8 @@ return false;
         output += ElseControl(str(AllKeyWords.RETURN.value)+' 0'+str(Integer.UINT32.value)+';').get()
         print(output)
         assert output == """if ( inputs.p1 > 100u32 ) { 
-return 10u32; 
-} else if ( inputs.p1 > 80u32 ) { 
+return 10u32;
+} else if ( inputs.p1 > 80u32 ) {
 return 8u32;
 } else { 
 return 0u32;
