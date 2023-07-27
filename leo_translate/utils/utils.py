@@ -147,5 +147,9 @@ class data_control:
 
     # Set the Leo display declaration type size
     def set_leo_display_type(self, value_type: str):
-        assert value_type in ['i8', 'i16', 'i32', 'i64', 'i128','u8', 'u16', 'u32', 'u64', 'u128']
+        assert value_type in ['i8', 'i16', 'i32', 'i64', 'i128', 'u8', 'u16', 'u32', 'u64', 'u128']
         self.display_type = value_type
+
+    def set_fixed_number(self, num):
+        assert num in [10, 100, 1000, 10000, 100000, 1000000, 1000000, 100000000]
+        self.fixed_number = num
