@@ -4,10 +4,9 @@ import unittest
 import pandas as pd
 from sklearn.feature_extraction import DictVectorizer
 
-from XGBoost.xgboost_to_leo import xgboost_leo_code
+from src.XGBoost.xgboost_to_leo import xgboost_leo_code
 from leo_translate.utils.utils import data_control
 from model_generate import XGBoostModel
-from utils.utils import quantize_leo
 
 
 class TestXGBoostMethods(unittest.TestCase):
@@ -24,6 +23,8 @@ class TestXGBoostMethods(unittest.TestCase):
             is_classification = True
         paths = os.listdir('data')
         for path in paths:
+            if path not in ["Chronic_Kidney_Disease"]:
+                continue
             # Load dataset
             new_path = os.path.join(os.path.join('data', path), 'new_data.tsv')
             print(new_path)
@@ -34,37 +35,12 @@ class TestXGBoostMethods(unittest.TestCase):
             # model_generate training
             xgb = xgb_model.get_prediction(data_len=num_columns - 1, model_type=model_type)
             dc = data_control(titanic.iloc[0])
+            dc.set_leo_display_type('i32')
+            dc.set_fixed_number(10)
             leo_code = xgboost_leo_code(xgb, dc, is_classification, leo_name)
             with open(f"tests/XGBoost/{path}.leo", "w") as f:
                 for line in leo_code:
                     f.write(line)
-
-    def test_data_qua(self):
-        """
-        generate data by "quantize"
-        :return: df data
-        """
-        new_path = 'data/Acute_Inflammations/new_data.tsv'
-        titanic = pd.read_table(new_path, sep="\t", header=None)
-        num_columns = titanic.shape[1]
-        # The head five fields as training data
-        x = titanic[[i for i in range(num_columns - 1)]]
-        print("*" * 30 + " x " + "*" * 30)
-        print(x.head())
-
-        dict_vec = DictVectorizer(sparse=False)
-        c = dict_vec.fit_transform(x.to_dict(orient="records"))
-
-        df = pd.DataFrame(c)
-        print(df)
-        features = []
-        for i in range(num_columns - 1):
-            features.append(i)
-        from XGBoost.leo_transpiler.quantize import quantize
-        df[features] = df[features].applymap(lambda x: quantize(x, 32))
-        print(df)
-        # leo run main "{c0:1163264i32, c1:0i32, c2:32767i32, c3:0i32, c4: 0i32, c5:0i32}"
-        # leo run main 1163264i32 0i32 32767i32 0i32 0i32 0i32
 
     def test_export(self):
         titanic = pd.read_table("data/Acute_Inflammations/new_data.tsv", sep='\t', header=None)

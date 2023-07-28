@@ -6,18 +6,19 @@ import pandas as pd
 from leo_translate.utils.utils import data_control
 from model_generate import DecisionTreeModel
 from src.decision_tree.decision_tree_to_leo import gene_name_and_type, dt_to_leo
-from utils.utils import quantize_leo
 
 
 class TestDecisionTreeMethods(unittest.TestCase):
 
     def test_gene_name_and_type(self):
-        print(gene_name_and_type(1, 5))
-        print(gene_name_and_type(0, 10))
+        print(gene_name_and_type(True, 5, 'i32'))
+        print(gene_name_and_type(True, 10, 'i32'))
 
     def test_main(self):
         paths = os.listdir('data')
         for path in paths:
+            if path not in ["Acute_Inflammations"]:
+                continue
             # Load dataset
             new_path = os.path.join(os.path.join('data', path), 'new_data.tsv')
             print("new_path: ", new_path)

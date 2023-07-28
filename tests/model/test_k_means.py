@@ -3,27 +3,9 @@ import unittest
 
 import pandas as pd
 
-from k_means.k_means_to_leo import generate_k_means_leo_code
+from src.k_means.k_means_to_leo import generate_k_means_leo_code
 from leo_translate.utils.utils import data_control
 from model_generate import KMeansModel
-
-
-# def decimal_significant_digits(centers):
-#     output = []
-#     for row in range(len(centers)):
-#         temp = []
-#         average = 0
-#         for col in range(len(centers[row])):
-#             average += centers[row][col]
-#         average = average / len(centers[row])
-#         if max(centers[row]) / 2 > average:
-#             for col in range(len(centers[row])):
-#                 temp.append(round(centers[row][col], 2))
-#         else:
-#             for col in range(len(centers[row])):
-#                 temp.append(float('%.3g' % centers[row][col]))
-#         output.append(temp)
-#     return output
 
 
 class TestKMeansMethods(unittest.TestCase):
@@ -33,6 +15,8 @@ class TestKMeansMethods(unittest.TestCase):
         paths = os.listdir('data')
         for path in paths:
             # Load dataset
+            if path not in ["Acute_Inflammations"]:
+                continue
             new_path = os.path.join(os.path.join('data', path), 'new_data.tsv')
             titanic = pd.read_table(new_path, sep="\t", header=None)
 

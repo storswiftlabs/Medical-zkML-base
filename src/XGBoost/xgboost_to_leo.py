@@ -1,6 +1,6 @@
 import numpy as np
 
-from decision_tree.decision_tree_to_leo import generate_body
+from src.decision_tree.decision_tree_to_leo import generate_body
 from leo_translate.context import Leo_context
 from leo_translate.core_module import Int_value, Let, ReturnStatement
 from leo_translate.core_module.control_pod import IfControl
@@ -135,7 +135,7 @@ def generate_functions_body(n_estimators, n_classes, is_leaves_est, threshold_es
         values_cls = values_est[i]
         sign_function_body = generate_body(children_left_cls, children_right_cls, feature_cls, threshold_cls,
                                            values_cls, fixed_number, is_negative, struct_name.lower(), struct_name,
-                                           context, is_leaves_cls, leo_display_type)
+                                           context, is_leaves_cls, leo_display_type, "function")
         functions_body.append(sign_function_body)
     return functions_body
 
