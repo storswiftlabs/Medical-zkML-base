@@ -1,6 +1,18 @@
 import os
 
+import numpy as np
+
 from preprocess_data.utils import Utils
+
+
+def convert_list_line_to_str(line):
+    res = ''
+    for index, ele in enumerate(line):
+        if index == len(line) - 1:
+            res += str(ele) + '\n'
+        else:
+            res += str(ele) + '\t'
+    return res
 
 
 class AbcParser(object):
@@ -44,8 +56,31 @@ class AbcParser(object):
 
          @return String of file written
         """
+        new_lines = []
+        for line in lines:
+            new_lines.append(convert_list_line_to_str(line))
         with open(self.get_save_path(), 'w+', encoding="utf-8") as f:
-            f.writelines(lines)
+            f.writelines(new_lines)
+
+    def get_column_info_save_path(self):
+        """
+         Get the path to save the column_uniformization_info.
+        """
+        return os.path.join(os.path.dirname(self._filename), "column_uniformization_info.tsv")
+
+    def get_all_column_min_max(self, lines):
+        """
+         Get lines numpy arrays all column min_max to save the column_uniformization_info.
+        """
+        column_max = ["max"]
+        column_min = ["min"]
+        for column_index in range(len(lines[0])):
+            column = lines[:, column_index]
+            column_max.append(np.max(column))
+            column_min.append(np.min(column))
+
+        with open(self.get_column_info_save_path(), 'w+', encoding="utf-8") as f:
+            f.writelines([convert_list_line_to_str(column_max), convert_list_line_to_str(column_min)])
 
 
 class ParserFile(AbcParser):
@@ -62,16 +97,16 @@ class ParserFile(AbcParser):
 
     @staticmethod
     def parser_acute_inflammations(line: str) -> str:
-        line_list = line.replace('no', 'False').replace('yes', 'True').replace(
+        line_list = line.replace('no', '0').replace('yes', '1').replace(
             '\n', '').replace(',', '.').split('\t')
         new_line_list = line_list[0:-2]
-        if line_list[-2] == 'False':
-            if line_list[-1] == 'False':
+        if line_list[-2] == '0':
+            if line_list[-1] == '0':
                 new_line_list.append('0')
             else:
                 new_line_list.append('2')
         else:
-            if line_list[-1] == 'False':
+            if line_list[-1] == '0':
                 new_line_list.append('1')
             else:
                 new_line_list.append('3')
@@ -134,18 +169,18 @@ class ParserFile(AbcParser):
             return ""
         if not line.startswith(('1', '2', '3', '4', '5', '6', '7', '8', '9')):
             return ""
-        line_list = line.replace('abnormal', '1').\
-            replace('normal', '0').\
-            replace('\n', '').\
-            replace(' ', '').\
-            replace('\t', '').\
-            replace('notpresent', '0').\
-            replace('present', '1').\
-            replace('notckd', '0').\
-            replace('yes', '0').\
-            replace('no', '1').\
-            replace('poor', '0').\
-            replace('good', '1').\
+        line_list = line.replace('abnormal', '1'). \
+            replace('normal', '0'). \
+            replace('\n', ''). \
+            replace(' ', ''). \
+            replace('\t', ''). \
+            replace('notpresent', '0'). \
+            replace('present', '1'). \
+            replace('notckd', '0'). \
+            replace('yes', '0'). \
+            replace('no', '1'). \
+            replace('poor', '0'). \
+            replace('good', '1'). \
             replace('ckd', '1').split(',')
         if len(line_list) != 25:
             return ""
@@ -222,8 +257,8 @@ class ParserFile(AbcParser):
         # print(arr)
         # print(row0, row1, row2, row3, row4, row5, row6, row7, row8, row9)
         new_line = row1 + '\t' + row2 + '\t' + row3 + '\t' + row4 + '\t' + \
-            row5 + '\t' + row6 + '\t' + row7 + '\t' + row8 + '\t' + row9 + \
-            '\t' + row0 + '\n'
+                   row5 + '\t' + row6 + '\t' + row7 + '\t' + row8 + '\t' + row9 + \
+                   '\t' + row0 + '\n'
         return new_line
 
     @staticmethod

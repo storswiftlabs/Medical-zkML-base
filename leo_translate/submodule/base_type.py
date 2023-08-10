@@ -16,5 +16,3 @@ class Integer(Enum):
 
 class Boolean(Enum):
     TYPE = "bool"
-    FALSE = False
-    TRUE = True
