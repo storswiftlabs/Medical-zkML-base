@@ -15,20 +15,25 @@ class XGBoostModel(AbcModel):
         """
         super(XGBoostModel, self).__init__(titanic)
 
-    def get_prediction(self, _len):
+    def get_prediction(self, data_len, model_type: str = "classification"):
         """
          Get predictions for a set of data. This is a function to be used in conjunction with : py : meth : ` ~gensim. models. BayesianModel. get_predictions ` # noqa: E501
-         @param _len - The length of the
+         @param data_len - The length of the
         """
-        x = self._get_x_dict(_len)
+        x = self._get_x_dict(data_len)
         y = self._get_y_titanic()
         # Divide the training set and test set
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
         from sklearn.preprocessing import LabelEncoder
         le = LabelEncoder()
         y_train = le.fit_transform(y_train)
-        reg = XGBC(n_estimators=10).fit(x_train, y_train)
-        reg.predict(x_test)
+        if model_type == "classification":
+            reg = XGBC(n_estimators=10).fit(x_train, y_train)
+        else:
+            reg = XGBR(n_estimators=10).fit(x_train, y_train)
+        # Get Predict Result
+        print("predict result", reg.predict(x_test))
+        # Get Score
         print("Score", reg.score(x_test, y_test))
         # Get Mean Square Error
         print("Mean Square Error", MSE(y_test, reg.predict(x_test)))

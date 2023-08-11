@@ -32,9 +32,7 @@ class TestValueMethods(unittest.TestCase):
         print(u128.get())
 
     def test_bool(self):
-        t = BoolValue(Boolean.TRUE.value)
-        f = BoolValue(Boolean.FALSE.value)
-        print(t.get(), f.get(), Boolean.TRUE.value, Boolean.FALSE.value, Boolean.TYPE.value)
+        print(Boolean.TYPE.value)
 
 
 if __name__ == '__main__':

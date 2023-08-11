@@ -1,9 +1,7 @@
-import os
-import pandas as pd
-from decision_tree.decision_tree_to_leo import dt_to_leo
-from model_generate import DecisionTreeModel
-from preprocess_data.parser_file import ParserFile
-from utils.utils import quantize_leo
+import numpy as np
+
+from sklearn import preprocessing
+from src.preprocess_data.parser_file import ParserFile
 
 FILE_PATH = [
     {
@@ -74,26 +72,30 @@ FILE_PATH = [
 
 if __name__ == "__main__":
     """
-    1.Data preprocess
-    2. Generate decision tree model
-    3. Translate model to leo code
+    Data preprocess
     """
     MODEL_NAME = 'dt'
     for file in FILE_PATH:
         print("=" * 30 + file['file'].split('/')[-1] + "=" * 30)
         pf = ParserFile(file['file'])
         lines = pf.read_file(file['encoding'])
+        remove_index = []
+        index_offset = 0
         for index, line in enumerate(lines):
-            lines[index] = file['func'](line)
-        pf.write_to_tsv(lines)
+            line = file['func'](line)
+            if len(line):
+                lines[index] = [float(ele) for ele in line.replace('\n', '').split('\t')]
+            else:
+                remove_index.append(index)
 
-        titanic = pd.read_table(pf.get_save_path(), sep='\t', header=None)
-        exponent, is_negative = quantize_leo(titanic.iloc[0])
-        model = DecisionTreeModel(titanic)
-        num_columns = titanic.shape[1]
-        dec_tree = model.get_prediction(_len=num_columns - 1)
-        leo_code = dt_to_leo(dec_tree, exponent, is_negative, MODEL_NAME + '.aleo')
-        leo_path = os.path.dirname(file['file']) + r'/' + \
-                   os.path.dirname(file['file']).split('/')[-1] + '_' + MODEL_NAME + '.leo'
-        with open(leo_path, mode='w+', encoding='utf8') as f:
-            f.writelines(leo_code)
+        # remove none line
+        for index in remove_index:
+            lines.remove(lines[index - index_offset])
+            index_offset += 1
+
+        lines = np.array(lines)
+        # save uniformization info
+        pf.get_all_column_min_max(lines)
+        min_max_scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
+        x_minMax = min_max_scaler.fit_transform(lines)
+        pf.write_to_tsv(x_minMax)

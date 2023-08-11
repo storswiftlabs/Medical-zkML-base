@@ -18,6 +18,6 @@ class TestControlMethods(unittest.TestCase):
         end_variate = '10'+str(Integer.UINT32.value)
         body = generate_body()
         print(Let('count', variate_type, start_variate).get())
-        output = table_format_control(ForLoop(variate, variate_type, start_variate, end_variate, body).get().split('\n'))
-        for index in range(0, len(output)):
-            print(output[index])
+        output = ForLoop(variate, variate_type, start_variate, end_variate, body).get()
+        print(''.join(table_format_control(output)))
+

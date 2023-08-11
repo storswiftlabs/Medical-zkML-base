@@ -12,5 +12,5 @@ class ForLoop(Statement):
         self.body = body
 
     def get(self):
-        return f"{AllKeyWords.FOR.value} {self.variate}: {self.variate_type} in {self.start_variate}..{self.end_variate}" \
-               f" {Sign.LEFT_BRACE.value} \n{self.body}; \n{Sign.RIGHT_BRACE.value} \n "
+        return f"{AllKeyWords.FOR.value} {self.variate}: {self.variate_type} in {self.start_variate}.." \
+               f"{self.end_variate}{Sign.LEFT_BRACE.value} \n{self.body};\n{Sign.RIGHT_BRACE.value}\n"

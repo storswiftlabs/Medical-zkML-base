@@ -1,4 +1,6 @@
 import unittest
+import os, sys
+sys.path.append(os.getcwd())
 
 from leo_translate.context import Leo_context
 from leo_translate.core_module import Struct, Transition
