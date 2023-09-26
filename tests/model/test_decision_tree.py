@@ -31,9 +31,9 @@ class TestDecisionTreeMethods(unittest.TestCase):
             dec_tree = model.get_prediction(_len=num_columns - 1)
 
             dt = dt_to_leo(dec_tree, dc, MODEL_NAME)
-            leo_path = "tests/dt/" + new_path.split("\\")[1] + ".leo"
-            with open(leo_path, 'w+') as file:
-                file.writelines(''.join(dt))
+            with open(f"tests/dt/{path}.leo", "w") as f:
+                for line in dt:
+                    f.write(line)
 
     def test_export(self):
         import matplotlib.pyplot as plt

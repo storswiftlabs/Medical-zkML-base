@@ -40,7 +40,6 @@ class Utils:
              0 1:2
              1 1:3
         """
-        # print("cc debug feature_two_combine_into_one", feature1, feature2, type(feature1))
         if feature1 == 'False':
             if feature2 == 'False':
                 return '0'

@@ -92,10 +92,13 @@ if __name__ == "__main__":
         for index in remove_index:
             lines.remove(lines[index - index_offset])
             index_offset += 1
-
-        lines = np.array(lines)
+        x = [line[:-1] for line in lines]
+        y = [line[-1:] for line in lines]
+        x = np.array(x)
         # save uniformization info
-        pf.get_all_column_min_max(lines)
+        pf.get_all_column_min_max(x)
         min_max_scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
-        x_minMax = min_max_scaler.fit_transform(lines)
-        pf.write_to_tsv(x_minMax)
+        x_minMax = min_max_scaler.fit_transform(x)
+        combined_array = np.concatenate((x_minMax, y), axis=1)
+        print(combined_array)
+        pf.write_to_tsv(combined_array)
